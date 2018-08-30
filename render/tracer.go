@@ -33,7 +33,7 @@ func (tracer *Tracer) Trace() {
 
 			tracedPhoton := geometry.NewPhoton(xPos, yPos, 1., 400.)
 			photon.X = tracedPhoton.X
-			photon.Y = tracedPhoton.X
+			photon.Y = tracedPhoton.Y
 			photon.Intensity = tracedPhoton.Intensity
 			photon.Wavelength = tracedPhoton.Wavelength
 		}
