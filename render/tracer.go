@@ -26,16 +26,18 @@ func NewTracer(width, height int, photonChannel chan []*geometry.Photon) *Tracer
 }
 
 func (tracer *Tracer) Trace() {
-	for _, photon := range tracer.photonBuffer {
-		xPos := rand.Intn(tracer.width)
-		yPos := rand.Intn(tracer.height)
+	for {
+		for _, photon := range tracer.photonBuffer {
+			xPos := rand.Intn(tracer.width)
+			yPos := rand.Intn(tracer.height)
 
-		tracedPhoton := geometry.NewPhoton(xPos, yPos, 1., 400.)
-		photon.X = tracedPhoton.X
-		photon.Y = tracedPhoton.X
-		photon.Intensity = tracedPhoton.Intensity
-		photon.Wavelength = tracedPhoton.Wavelength
+			tracedPhoton := geometry.NewPhoton(xPos, yPos, 1., 400.)
+			photon.X = tracedPhoton.X
+			photon.Y = tracedPhoton.X
+			photon.Intensity = tracedPhoton.Intensity
+			photon.Wavelength = tracedPhoton.Wavelength
+		}
+
+		tracer.photonChannel <- tracer.photonBuffer
 	}
-
-	tracer.photonChannel <- tracer.photonBuffer
 }

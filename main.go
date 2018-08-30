@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/wahtye/gotracer/geometry"
@@ -14,7 +13,7 @@ func main() {
 	photonChannel := make(chan []*geometry.Photon)
 
 	var wg sync.WaitGroup
-	wg.Add(2)
+	wg.Add(3)
 
 	go func() {
 		defer wg.Done()
@@ -24,14 +23,8 @@ func main() {
 
 	go func() {
 		defer wg.Done()
-		<-photonChannel
-		fmt.Println("got something 1")
-	}()
-
-	go func() {
-		defer wg.Done()
-		<-photonChannel
-		fmt.Println("got something 2")
+		gatherer := render.NewGatherer(width, height, photonChannel)
+		gatherer.Gather()
 	}()
 
 	wg.Wait()
