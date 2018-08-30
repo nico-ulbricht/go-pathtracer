@@ -8,14 +8,15 @@ import (
 
 type Renderer struct {
 	width, height int
+	scene         *Scene
 	canvasChannel chan []*Pixel
 	photonChannel chan []*geometry.Photon
 }
 
-func NewRenderer(width, height int) *Renderer {
+func NewRenderer(width, height int, scene *Scene) *Renderer {
 	canvasChannel := make(chan []*Pixel)
 	photonChannel := make(chan []*geometry.Photon)
-	return &Renderer{width, height, canvasChannel, photonChannel}
+	return &Renderer{width, height, scene, canvasChannel, photonChannel}
 }
 
 func (renderer *Renderer) Render() {
@@ -26,6 +27,7 @@ func (renderer *Renderer) Render() {
 		defer wg.Done()
 		NewTracer(
 			renderer.width, renderer.height,
+			renderer.scene,
 			renderer.photonChannel,
 		).Trace()
 	}()
@@ -34,6 +36,7 @@ func (renderer *Renderer) Render() {
 		defer wg.Done()
 		NewTracer(
 			renderer.width, renderer.height,
+			renderer.scene,
 			renderer.photonChannel,
 		).Trace()
 	}()
