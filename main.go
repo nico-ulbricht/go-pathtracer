@@ -7,7 +7,7 @@ import (
 
 func main() {
 	scene := render.NewScene()
-	scene.AddSurface(geometry.NewSphere(geometry.NewVector(0, 0, 0), 5))
+	scene.AddSurface(geometry.NewSphere(geometry.NewVector(250, 250, 50), 5))
 
 	render.NewRenderer(500, 500, scene).Render()
 }

@@ -1,6 +1,9 @@
 package render
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/wahtye/gotracer/geometry"
 )
 
@@ -36,16 +39,21 @@ func NewGatherer(width, height int, canvasChannel chan []*Pixel, photonChannel c
 
 func (gatherer *Gatherer) Gather() {
 	iterations := 0
+	start := time.Now()
+	total := 0
 	for {
 		photons := <-gatherer.photonChannel
 		for _, photon := range photons {
 			position := photon.Y*gatherer.width + photon.X
 			gatherer.canvas[position].accumulation += photon.Intensity
 			gatherer.canvas[position].samples++
+			total++
 		}
 
 		iterations++
 		if iterations%25 == 0 {
+			raysPerSecond := int(float64(total) / time.Since(start).Seconds())
+			fmt.Printf("%d rays per second\n", raysPerSecond)
 			gatherer.canvasChannel <- gatherer.canvas
 		}
 	}
