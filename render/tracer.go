@@ -53,6 +53,7 @@ func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray) 
 		isIntersection, _ := object.Surface.Intersect(ray)
 		if isIntersection == true {
 			photon.Intensity = 1.
+			return photon
 		}
 	}
 
