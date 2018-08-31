@@ -35,22 +35,27 @@ func (tracer *Tracer) Trace() {
 
 	for {
 		for _, photon := range tracer.photonBuffer {
-			xPos := rand.Intn(tracer.width)
-			yPos := rand.Intn(tracer.height)
-			photon.X = xPos
-			photon.Y = yPos
-
-			ray = tracer.camera.GetRayAt(xPos, yPos, ray)
-			for _, surface := range tracer.scene.Surfaces {
-				isIntersection, _ := surface.Intersect(ray)
-				if isIntersection == true {
-					photon.Intensity = 1.
-				}
-			}
-
-			photon.Intensity = 0.
+			photon = tracer.processPhoton(photon, ray)
 		}
 
 		tracer.photonChannel <- tracer.photonBuffer
 	}
+}
+
+func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray) *geometry.Photon {
+	xPos := rand.Intn(tracer.width)
+	yPos := rand.Intn(tracer.height)
+	photon.X = xPos
+	photon.Y = yPos
+
+	ray = tracer.camera.GetRayAt(xPos, yPos, ray)
+	for _, object := range tracer.scene.Objects {
+		isIntersection, _ := object.Surface.Intersect(ray)
+		if isIntersection == true {
+			photon.Intensity = 1.
+		}
+	}
+
+	photon.Intensity = 0.
+	return photon
 }

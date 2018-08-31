@@ -2,10 +2,11 @@ package geometry
 
 type Ray struct {
 	Origin, Direction *Vector
+	Probability       float64
 }
 
 func NewRay(origin, direction *Vector) *Ray {
-	return &Ray{origin, direction}
+	return &Ray{origin, direction, 1.}
 }
 
 func NewZeroRay() *Ray {

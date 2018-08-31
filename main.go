@@ -1,13 +1,25 @@
 package main
 
 import (
+	"math"
+	"math/rand"
+
 	"github.com/wahtye/gotracer/geometry"
+	"github.com/wahtye/gotracer/material"
 	"github.com/wahtye/gotracer/render"
 )
 
 func main() {
 	scene := render.NewScene()
-	scene.AddSurface(geometry.NewSphere(geometry.NewVector(250, 250, 50), 5))
+	sphereCount := 6
+	for i := 0; i < sphereCount; i++ {
+		angle := float64(2.*math.Pi/float64(sphereCount)) * float64(i)
+		spherePosition := geometry.NewVector(math.Sin(angle)*125+250, math.Cos(angle)*125+250, 80)
+
+		sphere := geometry.NewSphere(spherePosition, 30)
+		mat := material.NewDiffuseMaterial(rand.Float64())
+		scene.AddObject(mat, sphere)
+	}
 
 	render.NewRenderer(500, 500, scene).Render()
 }

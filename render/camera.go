@@ -15,5 +15,6 @@ func (camera *Camera) GetRayAt(x, y int, ray *geometry.Ray) *geometry.Ray {
 	ray.Direction.X = 0.
 	ray.Direction.Y = 0.
 	ray.Direction.Z = 1.
+	ray.Probability = 1.
 	return ray
 }

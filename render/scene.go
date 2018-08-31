@@ -1,16 +1,20 @@
 package render
 
-import "github.com/wahtye/gotracer/geometry"
+import (
+	"github.com/wahtye/gotracer/geometry"
+	"github.com/wahtye/gotracer/material"
+)
 
 type Scene struct {
-	Surfaces []geometry.Surface
+	Objects []*Object
 }
 
 func NewScene() *Scene {
-	surfaces := []geometry.Surface{}
-	return &Scene{surfaces}
+	objects := []*Object{}
+	return &Scene{objects}
 }
 
-func (scene *Scene) AddSurface(surface geometry.Surface) {
-	scene.Surfaces = append(scene.Surfaces, surface)
+func (scene *Scene) AddObject(material material.Material, surface geometry.Surface) {
+	object := NewObject(material, surface)
+	scene.Objects = append(scene.Objects, object)
 }
