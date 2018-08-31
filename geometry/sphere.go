@@ -13,13 +13,13 @@ func NewSphere(center *Vector, radius float64) *Sphere {
 	return &Sphere{center, radius}
 }
 
-func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
+func (sphere *Sphere) Intersect(ray *Ray, intersection *Intersection) (bool, *Intersection) {
 	originToCenter := sphere.center.Subtract(ray.Origin)
 	dotDirectionCenter := ray.Direction.Dot(originToCenter.Normalize())
 
 	// Sphere on the other side of the Ray
 	if dotDirectionCenter < 0 {
-		return false, &Intersection{}
+		return false, intersection
 	}
 
 	distanceOriginToCenter := originToCenter.Magnitude()
@@ -28,7 +28,7 @@ func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
 
 	// Ray misses Sphere
 	if distanceDirectionToCenter-sphere.radius > 0.000001 {
-		return false, &Intersection{}
+		return false, intersection
 	}
 
 	distancePow := math.Pow(distanceDirectionToCenter, 2)
@@ -41,6 +41,7 @@ func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
 	pointOfIntersection := ray.Origin.Add(ray.Direction.MultiplyScalar(distanceToIntersection))
 	centerToIntersection := pointOfIntersection.Subtract(sphere.center).Normalize()
 
-	intersection := NewIntersection(pointOfIntersection, centerToIntersection)
+	intersection.normal = centerToIntersection
+	intersection.point = pointOfIntersection
 	return true, intersection
 }

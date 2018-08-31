@@ -31,18 +31,19 @@ func NewTracer(width, height int, scene *Scene, photonChannel chan []*geometry.P
 }
 
 func (tracer *Tracer) Trace() {
+	intersection := geometry.NewZeroIntersection()
 	ray := geometry.NewZeroRay()
 
 	for {
 		for _, photon := range tracer.photonBuffer {
-			photon = tracer.processPhoton(photon, ray)
+			photon = tracer.processPhoton(photon, ray, intersection)
 		}
 
 		tracer.photonChannel <- tracer.photonBuffer
 	}
 }
 
-func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray) *geometry.Photon {
+func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray, intersection *geometry.Intersection) *geometry.Photon {
 	xPos := rand.Intn(tracer.width)
 	yPos := rand.Intn(tracer.height)
 	photon.X = xPos
@@ -50,7 +51,7 @@ func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray) 
 
 	ray = tracer.camera.GetRayAt(xPos, yPos, ray)
 	for _, object := range tracer.scene.Objects {
-		isIntersection, _ := object.Surface.Intersect(ray)
+		isIntersection, _ := object.Surface.Intersect(ray, intersection)
 		if isIntersection == true {
 			photon.Intensity = 1.
 			return photon

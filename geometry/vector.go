@@ -10,6 +10,10 @@ func NewVector(x, y, z float64) *Vector {
 	return &Vector{x, y, z}
 }
 
+func NewZeroVector() *Vector {
+	return NewVector(0, 0, 0)
+}
+
 func (vec *Vector) Add(vec2 *Vector) *Vector {
 	return NewVector(
 		vec.X+vec2.X,
