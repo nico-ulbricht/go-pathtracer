@@ -31,5 +31,16 @@ func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
 		return false, &Intersection{}
 	}
 
-	return true, &Intersection{}
+	distancePow := math.Pow(distanceDirectionToCenter, 2)
+	distanceOriginToMidpoint := math.Sqrt(math.Pow(distanceOriginToCenter, 2) - distancePow)
+	distanceIntersectionToMidpoint := math.Sqrt(math.Pow(sphere.radius, 2) - distancePow)
+	distanceOriginToIntersection1 := distanceOriginToMidpoint - distanceIntersectionToMidpoint
+	distanceOriginToIntersection2 := distanceOriginToMidpoint + distanceIntersectionToMidpoint
+
+	distanceToIntersection := math.Min(distanceOriginToIntersection1, distanceOriginToIntersection2)
+	pointOfIntersection := ray.Origin.Add(ray.Direction.MultiplyScalar(distanceToIntersection))
+	centerToIntersection := pointOfIntersection.Subtract(sphere.center).Normalize()
+
+	intersection := NewIntersection(pointOfIntersection, centerToIntersection)
+	return true, intersection
 }

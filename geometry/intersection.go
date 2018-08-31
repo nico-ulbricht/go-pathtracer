@@ -1,9 +1,10 @@
 package geometry
 
 type Intersection struct {
-	point *Vector
+	normal *Vector
+	point  *Vector
 }
 
-func NewIntersection(point *Vector) *Intersection {
-	return &Intersection{point}
+func NewIntersection(point, normal *Vector) *Intersection {
+	return &Intersection{point, normal}
 }
