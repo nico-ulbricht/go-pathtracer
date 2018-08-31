@@ -2,15 +2,18 @@ package render
 
 import "github.com/wahtye/gotracer/geometry"
 
-type Camera struct {
-}
+type Camera struct{}
 
 func NewCamera() *Camera {
 	return &Camera{}
 }
 
-func (camera *Camera) GetRayAt(x, y int) *geometry.Ray {
-	origin := geometry.NewVector(float64(x), float64(y), 0.)
-	direction := geometry.NewVector(0., 0., 1.)
-	return geometry.NewRay(origin, direction)
+func (camera *Camera) GetRayAt(x, y int, ray *geometry.Ray) *geometry.Ray {
+	ray.Origin.X = float64(x)
+	ray.Origin.Y = float64(y)
+	ray.Origin.Z = 0.
+	ray.Direction.X = 0.
+	ray.Direction.Y = 0.
+	ray.Direction.Z = 1.
+	return ray
 }

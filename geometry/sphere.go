@@ -14,8 +14,8 @@ func NewSphere(center *Vector, radius float64) *Sphere {
 }
 
 func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
-	originToCenter := sphere.center.Subtract(ray.origin)
-	dotDirectionCenter := ray.direction.Dot(originToCenter.Normalize())
+	originToCenter := sphere.center.Subtract(ray.Origin)
+	dotDirectionCenter := ray.Direction.Dot(originToCenter.Normalize())
 
 	// Sphere on the other side of the Ray
 	if dotDirectionCenter < 0 {
