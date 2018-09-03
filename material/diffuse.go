@@ -14,6 +14,6 @@ func (mat *DiffuseMaterial) Reflect(ray *geometry.Ray, intersection *geometry.In
 	nDotDir := ray.Direction.Dot(intersection.Normal)
 	ray.Direction = ray.Direction.Subtract(intersection.Normal.MultiplyScalar(2 * nDotDir))
 	ray.Origin = intersection.Point
-	ray.Probability *= mat.reflectance * .96
+	ray.Intensity *= mat.reflectance
 	return ray
 }

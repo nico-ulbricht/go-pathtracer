@@ -7,6 +7,8 @@ import (
 	"github.com/wahtye/gotracer/material"
 )
 
+const MAX_BOUNCES = 3
+
 type Tracer struct {
 	width, height int
 	camera        *Camera
@@ -60,16 +62,17 @@ func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray, 
 		}
 	}
 
-	if closestObject == nil || ray.Probability < .6 {
+	if closestObject == nil || ray.Bounces > MAX_BOUNCES {
 		return photon
 	}
 
 	switch objectMaterial := closestObject.Material.(type) {
 	case material.WhiteBodyMaterial:
 		reflectionRay := objectMaterial.Reflect(ray, closestIntersection)
+		reflectionRay.Bounces++
 		return tracer.processPhoton(photon, reflectionRay, intersection)
 	case material.BlackBodyMaterial:
-		photon.Intensity = objectMaterial.GetIntensity(ray)
+		photon.Intensity = objectMaterial.GetIntensity(ray) * ray.Intensity
 		return photon
 	}
 
