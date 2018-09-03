@@ -8,6 +8,8 @@ import (
 	"os"
 )
 
+const GAMMA = 1.
+
 type Plotter struct {
 	width, height int
 	canvasChannel chan []*Pixel
@@ -29,7 +31,7 @@ func (plotter *Plotter) Plot() {
 				position := y*plotter.width + x
 				pixel := canvas[position]
 
-				accumulation := math.Min(1., pixel.accumulation/float64(pixel.samples))
+				accumulation := math.Min(1., math.Pow(pixel.accumulation/float64(pixel.samples), GAMMA))
 				intensity := uint8(math.Floor(accumulation * 255.))
 				img.SetRGBA(x, y, color.RGBA{intensity, intensity, intensity, 255})
 			}
