@@ -1,5 +1,5 @@
 package geometry
 
 type Surface interface {
-	Intersect(*Ray, *Intersection) (bool, *Intersection)
+	Intersect(*Ray) (bool, *Intersection)
 }

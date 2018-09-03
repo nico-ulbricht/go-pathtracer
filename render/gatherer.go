@@ -44,17 +44,14 @@ func (gatherer *Gatherer) Gather() {
 	for {
 		photons := <-gatherer.photonChannel
 		for _, photon := range photons {
-			if photon.Intensity > 0. {
-				position := photon.Y*gatherer.width + photon.X
-				gatherer.canvas[position].accumulation += photon.Intensity
-				gatherer.canvas[position].samples++
-			}
-
+			position := photon.Y*gatherer.width + photon.X
+			gatherer.canvas[position].accumulation += photon.Intensity
+			gatherer.canvas[position].samples++
 			total++
 		}
 
 		iterations++
-		if iterations%25 == 0 {
+		if iterations%5 == 0 {
 			raysPerSecond := int(float64(total) / time.Since(start).Seconds())
 			fmt.Printf("%d rays per second\n", raysPerSecond)
 			gatherer.canvasChannel <- gatherer.canvas

@@ -34,7 +34,6 @@ func NewTracer(width, height int, scene *Scene, photonChannel chan []*geometry.P
 }
 
 func (tracer *Tracer) Trace() {
-	intersection := geometry.NewZeroIntersection()
 	ray := geometry.NewZeroRay()
 
 	for {
@@ -42,20 +41,20 @@ func (tracer *Tracer) Trace() {
 			photon.X = rand.Intn(tracer.width)
 			photon.Y = rand.Intn(tracer.height)
 			ray = tracer.camera.GetRayAt(photon.X, photon.Y, ray)
-			photon = tracer.processPhoton(photon, ray, intersection)
+			photon = tracer.processPhoton(photon, ray)
 		}
 
 		tracer.photonChannel <- tracer.photonBuffer
 	}
 }
 
-func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray, intersection *geometry.Intersection) *geometry.Photon {
+func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray) *geometry.Photon {
 	photon.Intensity = 0.
 
 	var closestIntersection *geometry.Intersection
 	var closestObject *Object
 	for _, object := range tracer.scene.Objects {
-		isIntersection, intersection := object.Surface.Intersect(ray, intersection)
+		isIntersection, intersection := object.Surface.Intersect(ray)
 		if isIntersection == true && (closestIntersection == nil || closestIntersection.Distance > intersection.Distance) {
 			closestIntersection = intersection
 			closestObject = object
@@ -70,9 +69,9 @@ func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray, 
 	case material.WhiteBodyMaterial:
 		reflectionRay := objectMaterial.Reflect(ray, closestIntersection)
 		reflectionRay.Bounces++
-		return tracer.processPhoton(photon, reflectionRay, intersection)
+		return tracer.processPhoton(photon, reflectionRay)
 	case material.BlackBodyMaterial:
-		photon.Intensity = objectMaterial.GetIntensity(ray) * ray.Intensity
+		photon.Intensity = objectMaterial.GetIntensity(ray)
 		return photon
 	}
 

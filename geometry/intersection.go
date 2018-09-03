@@ -6,8 +6,8 @@ type Intersection struct {
 	Point    *Vector
 }
 
-func NewIntersection(distance float64, point, normal *Vector) *Intersection {
-	return &Intersection{distance, point, normal}
+func NewIntersection(distance float64, normal, point *Vector) *Intersection {
+	return &Intersection{distance, normal, point}
 }
 
 func NewZeroIntersection() *Intersection {

@@ -11,5 +11,5 @@ func NewEmissiveMaterial(intensity, temperature float64) *EmissiveMaterial {
 }
 
 func (mat *EmissiveMaterial) GetIntensity(ray *geometry.Ray) float64 {
-	return 1.
+	return mat.intensity * ray.Intensity
 }

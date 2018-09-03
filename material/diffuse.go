@@ -18,6 +18,6 @@ func (mat *DiffuseMaterial) Reflect(ray *geometry.Ray, intersection *geometry.In
 	hemisphereVector := geometry.NewHemisphereVector()
 	ray.Direction = hemisphereVector.RotateTowards(intersection.Normal)
 	ray.Origin = intersection.Point
-	ray.Intensity *= mat.reflectance
+	ray.Intensity *= mat.reflectance * .96
 	return ray
 }
