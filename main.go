@@ -2,6 +2,7 @@ package main
 
 import (
 	"math"
+	"math/rand"
 
 	"github.com/wahtye/gotracer/geometry"
 	"github.com/wahtye/gotracer/material"
@@ -16,6 +17,7 @@ func main() {
 func buildScene(size float64) *render.Scene {
 	scene := render.NewScene()
 	scene.AddObject(material.NewDiffuseMaterial(1.), geometry.NewPlane(geometry.NewVector(0, 0, 110), geometry.NewVector(0, 0, -1.)))
+	scene.AddObject(material.NewDiffuseMaterial(1.), geometry.NewPlane(geometry.NewVector(0, 0, -110), geometry.NewVector(0, 0, 1.)))
 
 	sphereCount := 6
 	for i := 0; i < sphereCount; i++ {
@@ -28,7 +30,7 @@ func buildScene(size float64) *render.Scene {
 		if i%2 == 0 {
 			mat = material.NewDiffuseMaterial(.8)
 		} else {
-			mat = material.NewEmissiveMaterial(1., 6000)
+			mat = material.NewEmissiveMaterial(rand.Float64()*2.+1., 6000)
 		}
 
 		scene.AddObject(mat, sphere)

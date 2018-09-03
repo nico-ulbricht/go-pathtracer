@@ -29,7 +29,8 @@ func (plotter *Plotter) Plot() {
 				position := y*plotter.width + x
 				pixel := canvas[position]
 
-				intensity := uint8(math.Floor(pixel.accumulation / float64(pixel.samples) * 255.))
+				accumulation := math.Min(1., pixel.accumulation/float64(pixel.samples))
+				intensity := uint8(math.Floor(accumulation * 255.))
 				img.SetRGBA(x, y, color.RGBA{intensity, intensity, intensity, 255})
 			}
 		}

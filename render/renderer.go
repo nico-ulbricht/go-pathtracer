@@ -23,7 +23,7 @@ func (renderer *Renderer) Render() {
 	var wg sync.WaitGroup
 	wg.Add(4)
 
-	for i := 0; i < 3; i++ {
+	for i := 0; i < 2; i++ {
 		go func() {
 			defer wg.Done()
 			NewTracer(
