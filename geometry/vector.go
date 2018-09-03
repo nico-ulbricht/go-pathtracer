@@ -1,6 +1,9 @@
 package geometry
 
-import "math"
+import (
+	"math"
+	"math/rand"
+)
 
 type Vector struct {
 	X, Y, Z float64
@@ -12,6 +15,13 @@ func NewVector(x, y, z float64) *Vector {
 
 func NewZeroVector() *Vector {
 	return NewVector(0, 0, 0)
+}
+
+func NewHemisphereVector() *Vector {
+	x := rand.Float64()*2. - 1.
+	y := rand.Float64()*2. - 1.
+	z := rand.Float64()
+	return NewVector(x, y, z).Normalize()
 }
 
 func (vec *Vector) Add(vec2 *Vector) *Vector {
@@ -46,6 +56,14 @@ func (vec *Vector) DivideScalar(divider float64) *Vector {
 	)
 }
 
+func (vec *Vector) Cross(vec2 *Vector) *Vector {
+	return NewVector(
+		vec.Y*vec2.Z-vec.Z*vec2.Y,
+		vec.Z*vec2.X-vec.X*vec2.Z,
+		vec.X*vec2.Y-vec.Y*vec2.X,
+	)
+}
+
 func (vec *Vector) Dot(vec2 *Vector) float64 {
 	return vec.X*vec2.X + vec.Y*vec2.Y + vec.Z*vec2.Z
 
@@ -58,4 +76,23 @@ func (vec *Vector) Normalize() *Vector {
 
 func (vec *Vector) Magnitude() float64 {
 	return math.Sqrt(math.Pow(vec.X, 2.) + math.Pow(vec.Y, 2.) + math.Pow(vec.Z, 2.))
+}
+
+func (vec *Vector) RotateTowards(normal *Vector) *Vector {
+	upVector := NewVector(0, 0, 1)
+
+	if normal.Z > .999999 {
+		return NewVector(vec.X, vec.Y, math.Abs(vec.Z))
+	} else if normal.Z < -.999999 {
+		return NewVector(vec.X, vec.Y, -math.Abs(vec.Z))
+	}
+
+	a1 := upVector.Cross(normal)
+	a2 := a1.Cross(normal)
+
+	p1 := a1.MultiplyScalar(vec.X)
+	p2 := a2.MultiplyScalar(vec.Y)
+	p3 := normal.MultiplyScalar(vec.Z)
+
+	return p1.Add(p2).Add(p3).Normalize()
 }

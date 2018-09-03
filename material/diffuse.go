@@ -11,8 +11,12 @@ func NewDiffuseMaterial(reflectance float64) *DiffuseMaterial {
 }
 
 func (mat *DiffuseMaterial) Reflect(ray *geometry.Ray, intersection *geometry.Intersection) *geometry.Ray {
-	nDotDir := ray.Direction.Dot(intersection.Normal)
-	ray.Direction = ray.Direction.Subtract(intersection.Normal.MultiplyScalar(2 * nDotDir))
+	if ray.Direction.Dot(intersection.Normal) > 0. {
+		intersection.Normal = intersection.Normal.MultiplyScalar(-1.)
+	}
+
+	hemisphereVector := geometry.NewHemisphereVector()
+	ray.Direction = hemisphereVector.RotateTowards(intersection.Normal)
 	ray.Origin = intersection.Point
 	ray.Intensity *= mat.reflectance
 	return ray

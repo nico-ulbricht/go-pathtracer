@@ -44,9 +44,12 @@ func (gatherer *Gatherer) Gather() {
 	for {
 		photons := <-gatherer.photonChannel
 		for _, photon := range photons {
-			position := photon.Y*gatherer.width + photon.X
-			gatherer.canvas[position].accumulation += photon.Intensity
-			gatherer.canvas[position].samples++
+			if photon.Intensity > 0. {
+				position := photon.Y*gatherer.width + photon.X
+				gatherer.canvas[position].accumulation += photon.Intensity
+				gatherer.canvas[position].samples++
+			}
+
 			total++
 		}
 
