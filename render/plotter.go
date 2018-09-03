@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-const GAMMA = 1.
+const GAMMA = .75
 
 type Plotter struct {
 	width, height int
