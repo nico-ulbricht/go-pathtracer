@@ -4,6 +4,7 @@ import (
 	"math/rand"
 
 	"github.com/wahtye/gotracer/geometry"
+	"github.com/wahtye/gotracer/material"
 )
 
 type Tracer struct {
@@ -36,6 +37,9 @@ func (tracer *Tracer) Trace() {
 
 	for {
 		for _, photon := range tracer.photonBuffer {
+			photon.X = rand.Intn(tracer.width)
+			photon.Y = rand.Intn(tracer.height)
+			ray = tracer.camera.GetRayAt(photon.X, photon.Y, ray)
 			photon = tracer.processPhoton(photon, ray, intersection)
 		}
 
@@ -44,20 +48,31 @@ func (tracer *Tracer) Trace() {
 }
 
 func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray, intersection *geometry.Intersection) *geometry.Photon {
-	xPos := rand.Intn(tracer.width)
-	yPos := rand.Intn(tracer.height)
-	photon.X = xPos
-	photon.Y = yPos
+	photon.Intensity = 0.
 
-	ray = tracer.camera.GetRayAt(xPos, yPos, ray)
+	var closestIntersection *geometry.Intersection
+	var closestObject *Object
 	for _, object := range tracer.scene.Objects {
-		isIntersection, _ := object.Surface.Intersect(ray, intersection)
-		if isIntersection == true {
-			photon.Intensity = 1.
-			return photon
+		isIntersection, intersection := object.Surface.Intersect(ray, intersection)
+		if isIntersection == true && (closestIntersection == nil || closestIntersection.Distance > intersection.Distance) {
+			closestIntersection = intersection
+			closestObject = object
 		}
 	}
 
-	photon.Intensity = 0.
-	return photon
+	if closestObject == nil {
+		return photon
+	}
+
+	switch objectMaterial := closestObject.Material.(type) {
+	case material.WhiteBodyMaterial:
+		photon.Intensity = .5
+		return photon
+	case material.BlackBodyMaterial:
+		photon.Intensity = objectMaterial.GetIntensity(ray)
+		return photon
+	default:
+		photon.Intensity = .2
+		return photon
+	}
 }

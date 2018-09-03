@@ -17,7 +17,14 @@ func main() {
 		spherePosition := geometry.NewVector(math.Sin(angle)*125+250, math.Cos(angle)*125+250, 80)
 
 		sphere := geometry.NewSphere(spherePosition, 30)
-		mat := material.NewDiffuseMaterial(rand.Float64())
+
+		var mat material.Material
+		if i%2 == 0 {
+			mat = material.NewDiffuseMaterial(rand.Float64())
+		} else {
+			mat = material.NewEmissiveMaterial(rand.Float64(), 6000)
+		}
+
 		scene.AddObject(mat, sphere)
 	}
 

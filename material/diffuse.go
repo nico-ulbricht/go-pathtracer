@@ -10,7 +10,7 @@ func NewDiffuseMaterial(reflectance float64) *DiffuseMaterial {
 	return &DiffuseMaterial{reflectance}
 }
 
-func (mat *DiffuseMaterial) reflect(ray *geometry.Ray) *geometry.Ray {
+func (mat *DiffuseMaterial) Reflect(ray *geometry.Ray, intersection *geometry.Intersection) *geometry.Ray {
 	ray.Probability *= mat.reflectance
 	return ray
 }

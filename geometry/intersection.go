@@ -1,14 +1,15 @@
 package geometry
 
 type Intersection struct {
-	normal *Vector
-	point  *Vector
+	Distance float64
+	normal   *Vector
+	point    *Vector
 }
 
-func NewIntersection(point, normal *Vector) *Intersection {
-	return &Intersection{point, normal}
+func NewIntersection(distance float64, point, normal *Vector) *Intersection {
+	return &Intersection{distance, point, normal}
 }
 
 func NewZeroIntersection() *Intersection {
-	return &Intersection{NewZeroVector(), NewZeroVector()}
+	return &Intersection{0, NewZeroVector(), NewZeroVector()}
 }

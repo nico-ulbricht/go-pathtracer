@@ -23,14 +23,16 @@ func (renderer *Renderer) Render() {
 	var wg sync.WaitGroup
 	wg.Add(4)
 
-	go func() {
-		defer wg.Done()
-		NewTracer(
-			renderer.width, renderer.height,
-			renderer.scene,
-			renderer.photonChannel,
-		).Trace()
-	}()
+	for i := 0; i < 3; i++ {
+		go func() {
+			defer wg.Done()
+			NewTracer(
+				renderer.width, renderer.height,
+				renderer.scene,
+				renderer.photonChannel,
+			).Trace()
+		}()
+	}
 
 	go func() {
 		defer wg.Done()

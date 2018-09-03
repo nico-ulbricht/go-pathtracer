@@ -10,6 +10,6 @@ func NewEmissiveMaterial(intensity, temperature float64) *EmissiveMaterial {
 	return &EmissiveMaterial{intensity, temperature}
 }
 
-func (mat *EmissiveMaterial) getIntensity(ray *geometry.Ray) float64 {
+func (mat *EmissiveMaterial) GetIntensity(ray *geometry.Ray) float64 {
 	return 1.
 }
