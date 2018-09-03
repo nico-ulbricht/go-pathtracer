@@ -18,10 +18,15 @@ func NewZeroVector() *Vector {
 }
 
 func NewHemisphereVector() *Vector {
-	x := rand.Float64()*2. - 1.
-	y := rand.Float64()*2. - 1.
-	z := rand.Float64()
-	return NewVector(x, y, z).Normalize()
+	phi := rand.Float64() * 2. * math.Pi
+	rd := rand.Float64()*2. - 1.
+	r := math.Sqrt(rd)
+
+	return NewVector(
+		math.Cos(phi)*r,
+		math.Sin(phi)*r,
+		math.Sqrt(1.-rd),
+	).Normalize()
 }
 
 func (vec *Vector) Add(vec2 *Vector) *Vector {
