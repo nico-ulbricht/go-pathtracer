@@ -2,8 +2,8 @@ package geometry
 
 type Intersection struct {
 	Distance float64
-	normal   *Vector
-	point    *Vector
+	Normal   *Vector
+	Point    *Vector
 }
 
 func NewIntersection(distance float64, point, normal *Vector) *Intersection {

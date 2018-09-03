@@ -20,7 +20,7 @@ func main() {
 
 		var mat material.Material
 		if i%2 == 0 {
-			mat = material.NewDiffuseMaterial(rand.Float64())
+			mat = material.NewDiffuseMaterial(1.)
 		} else {
 			mat = material.NewEmissiveMaterial(rand.Float64(), 6000)
 		}

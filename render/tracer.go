@@ -60,19 +60,18 @@ func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray, 
 		}
 	}
 
-	if closestObject == nil {
+	if closestObject == nil || ray.Probability < .6 {
 		return photon
 	}
 
 	switch objectMaterial := closestObject.Material.(type) {
 	case material.WhiteBodyMaterial:
-		photon.Intensity = .5
-		return photon
+		reflectionRay := objectMaterial.Reflect(ray, closestIntersection)
+		return tracer.processPhoton(photon, reflectionRay, intersection)
 	case material.BlackBodyMaterial:
 		photon.Intensity = objectMaterial.GetIntensity(ray)
 		return photon
-	default:
-		photon.Intensity = .2
-		return photon
 	}
+
+	return photon
 }

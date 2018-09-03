@@ -41,7 +41,7 @@ func (sphere *Sphere) Intersect(ray *Ray, intersection *Intersection) (bool, *In
 	pointOfIntersection := ray.Origin.Add(ray.Direction.MultiplyScalar(distanceToIntersection))
 	centerToIntersection := pointOfIntersection.Subtract(sphere.center).Normalize()
 
-	intersection.normal = centerToIntersection
-	intersection.point = pointOfIntersection
+	intersection.Normal = centerToIntersection
+	intersection.Point = pointOfIntersection
 	return true, intersection
 }
