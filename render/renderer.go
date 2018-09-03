@@ -1,6 +1,7 @@
 package render
 
 import (
+	"runtime"
 	"sync"
 
 	"github.com/wahtye/gotracer/geometry"
@@ -20,10 +21,11 @@ func NewRenderer(width, height int, scene *Scene) *Renderer {
 }
 
 func (renderer *Renderer) Render() {
-	var wg sync.WaitGroup
-	wg.Add(4)
+	numCpus := runtime.NumCPU()
 
-	for i := 0; i < 2; i++ {
+	var wg sync.WaitGroup
+	wg.Add(numCpus)
+	for i := 0; i < numCpus-2; i++ {
 		go func() {
 			defer wg.Done()
 			NewTracer(
@@ -33,15 +35,6 @@ func (renderer *Renderer) Render() {
 			).Trace()
 		}()
 	}
-
-	go func() {
-		defer wg.Done()
-		NewTracer(
-			renderer.width, renderer.height,
-			renderer.scene,
-			renderer.photonChannel,
-		).Trace()
-	}()
 
 	go func() {
 		defer wg.Done()
