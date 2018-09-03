@@ -19,7 +19,7 @@ func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
 
 	// Sphere on the other side of the Ray
 	if dotDirectionCenter < 0 {
-		return false, NewZeroIntersection()
+		return false, NoIntersection
 	}
 
 	distanceOriginToCenter := originToCenter.Magnitude()
@@ -28,7 +28,7 @@ func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
 
 	// Ray misses Sphere
 	if distanceDirectionToCenter-sphere.radius > 0.000001 {
-		return false, NewZeroIntersection()
+		return false, NoIntersection
 	}
 
 	distancePow := math.Pow(distanceDirectionToCenter, 2)

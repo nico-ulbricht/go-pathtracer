@@ -14,7 +14,7 @@ func (plane *Plane) Intersect(ray *Ray) (bool, *Intersection) {
 
 	// Behind or parallel
 	if directionDotNormal >= 0. {
-		return false, NewZeroIntersection()
+		return false, NoIntersection
 	}
 
 	rayToPlane := plane.center.Subtract(ray.Origin)
