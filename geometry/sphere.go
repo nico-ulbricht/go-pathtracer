@@ -5,41 +5,41 @@ import (
 )
 
 type Sphere struct {
-	center *Vector
-	radius float64
+	center   *Vector
+	radius   float64
+	radiusSq float64
 }
 
 func NewSphere(center *Vector, radius float64) *Sphere {
-	return &Sphere{center, radius}
+	radiusSq := math.Pow(radius, 2.)
+	return &Sphere{center, radius, radiusSq}
 }
 
 func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
-	originToCenter := sphere.center.Subtract(ray.Origin)
-	dotDirectionCenter := ray.Direction.Dot(originToCenter.Normalize())
+	centerToOrigin := sphere.center.Subtract(ray.Origin)
+	a := 1.
+	b := ray.Direction.Dot(centerToOrigin) * 2.
+	c := centerToOrigin.Dot(centerToOrigin) - sphere.radiusSq
+	discriminant := b*b - 4.*a*c
 
-	// Sphere on the other side of the Ray
-	if dotDirectionCenter < 0 {
+	if discriminant < 0 {
 		return false, NoIntersection
 	}
 
-	distanceOriginToCenter := originToCenter.Magnitude()
-	degreesDirectionOrigin := math.Acos(dotDirectionCenter)
-	distanceDirectionToCenter := math.Sin(degreesDirectionOrigin) * distanceOriginToCenter
+	discriminantSqrt := math.Sqrt(discriminant)
+	distanceOne := -0.5 * (-b + discriminantSqrt) / a
+	distanceTwo := -0.5 * (-b - discriminantSqrt) / a
 
-	// Ray misses Sphere
-	if distanceDirectionToCenter-sphere.radius > 0.000001 {
+	var distance float64
+	if distanceOne > 0. && distanceOne < distanceTwo {
+		distance = distanceOne
+	} else if distanceTwo > 0. && distanceTwo < distanceOne {
+		distance = distanceTwo
+	} else {
 		return false, NoIntersection
 	}
 
-	distancePow := math.Pow(distanceDirectionToCenter, 2)
-	distanceOriginToMidpoint := math.Sqrt(math.Pow(distanceOriginToCenter, 2) - distancePow)
-	distanceIntersectionToMidpoint := math.Sqrt(math.Pow(sphere.radius, 2) - distancePow)
-	distanceOriginToIntersection1 := distanceOriginToMidpoint - distanceIntersectionToMidpoint
-	distanceOriginToIntersection2 := distanceOriginToMidpoint + distanceIntersectionToMidpoint
-
-	distanceToIntersection := math.Min(distanceOriginToIntersection1, distanceOriginToIntersection2)
-	pointOfIntersection := ray.Origin.Add(ray.Direction.MultiplyScalar(distanceToIntersection))
+	pointOfIntersection := ray.Origin.Add(ray.Direction.MultiplyScalar(distance))
 	centerToIntersection := pointOfIntersection.Subtract(sphere.center).Normalize()
-
-	return true, NewIntersection(distanceToIntersection, centerToIntersection, pointOfIntersection)
+	return true, NewIntersection(distance, centerToIntersection, pointOfIntersection)
 }

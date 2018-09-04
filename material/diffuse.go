@@ -1,6 +1,8 @@
 package material
 
-import "github.com/wahtye/gotracer/geometry"
+import (
+	"github.com/wahtye/gotracer/geometry"
+)
 
 type DiffuseMaterial struct {
 	reflectance float64

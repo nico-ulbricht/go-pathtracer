@@ -7,7 +7,8 @@ type Ray struct {
 }
 
 func NewRay(origin, direction *Vector) *Ray {
-	return &Ray{0., origin, direction, 1.}
+	normalizedDirection := direction.Normalize()
+	return &Ray{0., origin, normalizedDirection, 1.}
 }
 
 func NewZeroRay() *Ray {

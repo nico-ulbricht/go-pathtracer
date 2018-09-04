@@ -19,7 +19,7 @@ func NewZeroVector() *Vector {
 
 func NewHemisphereVector() *Vector {
 	phi := rand.Float64() * 2. * math.Pi
-	rd := rand.Float64()*2. - 1.
+	rd := rand.Float64()
 	r := math.Sqrt(rd)
 
 	return NewVector(
