@@ -1,7 +1,7 @@
 package material
 
 import (
-	"github.com/wahtye/gotracer/geometry"
+	"github.com/wahtye/go-pathtracer/geometry"
 )
 
 type ReflectiveMaterial struct {

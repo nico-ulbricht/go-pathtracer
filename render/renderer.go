@@ -4,7 +4,7 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/wahtye/gotracer/geometry"
+	"github.com/wahtye/go-pathtracer/geometry"
 )
 
 type Renderer struct {
