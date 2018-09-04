@@ -53,7 +53,7 @@ func (gatherer *Gatherer) Gather() {
 		iterations++
 		if iterations%5 == 0 {
 			raysPerSecond := int(float64(total) / time.Since(start).Seconds())
-			fmt.Printf("%d rays per second\n", raysPerSecond)
+			fmt.Printf("%d rays per second, %d total\n", raysPerSecond, total)
 			gatherer.canvasChannel <- gatherer.canvas
 		}
 	}
