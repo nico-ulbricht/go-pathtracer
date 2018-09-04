@@ -23,7 +23,7 @@ func NewTracer(width, height int, scene *Scene, photonChannel chan []*geometry.P
 		photonBuffer[idx] = geometry.NewPhoton(0, 0, 0)
 	}
 
-	camera := NewCamera()
+	camera := NewCamera(width, height, 500)
 	return &Tracer{
 		width, height,
 		camera,
