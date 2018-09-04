@@ -5,7 +5,7 @@
 ## Introduction  
 This pathtracer is a project to get back into the magic of golang. It tries to make use of golangs features such as goroutines and channels for rendering performance.  
 
-It is means purely as a learning project, and in no way optimized to be used by anything serious.  
+It is meant purely as a learning project, and in no way optimized to be used for anything serious.  
 
 ## Running  
 If you'd like to try it out nonetheless:  
