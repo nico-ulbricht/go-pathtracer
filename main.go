@@ -36,7 +36,14 @@ func buildScene(size float64) *render.Scene {
 		spherePosition := geometry.NewVector(math.Sin(angle)*size/6.+size/2., floorY-radius, math.Cos(angle)*size/6.-size/4.)
 		sphere := geometry.NewSphere(spherePosition, radius)
 
-		scene.AddObject(reflectiveMaterial, sphere)
+		var mat material.Material
+		if i%2 == 0 {
+			mat = diffuseMaterial
+		} else {
+			mat = reflectiveMaterial
+		}
+
+		scene.AddObject(mat, sphere)
 	}
 
 	return scene
