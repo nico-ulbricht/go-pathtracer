@@ -23,15 +23,6 @@ func NewHemisphereVector() *Vector {
 		rand.Float64()*2.-1.,
 		rand.Float64(),
 	).Normalize()
-	// phi := rand.Float64() * 2. * math.Pi
-	// rd := rand.Float64()
-	// r := math.Sqrt(rd)
-
-	// return NewVector(
-	// 	math.Cos(phi)*r,
-	// 	math.Sin(phi)*r,
-	// 	math.Sqrt(1.-rd),
-	// ).Normalize()
 }
 
 func (vec *Vector) Add(vec2 *Vector) *Vector {
