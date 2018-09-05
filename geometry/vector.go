@@ -88,12 +88,13 @@ func (vec *Vector) RotateTowards(normal *Vector) *Vector {
 		return NewVector(vec.X, vec.Y, -math.Abs(vec.Z))
 	}
 
-	a1 := upVector.Cross(normal)
-	a2 := a1.Cross(normal)
+	a1 := upVector.Cross(normal).Normalize()
+	a2 := a1.Cross(normal).Normalize()
 
 	p1 := a1.MultiplyScalar(vec.X)
 	p2 := a2.MultiplyScalar(vec.Y)
 	p3 := normal.MultiplyScalar(vec.Z)
 
-	return p1.Add(p2).Add(p3).Normalize()
+	rotatedVector := p1.Add(p2).Add(p3).Normalize()
+	return rotatedVector
 }
