@@ -30,7 +30,7 @@ func buildScene(size float64) *render.Scene {
 	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, floorY, 0), geometry.NewVector(0, -1., 0)))
 
 	sphereCount := 3
-	radius := size / 16.
+	radius := size / 12.
 	for i := 0; i < sphereCount; i++ {
 		angle := float64(1.8*math.Pi/float64(sphereCount)) * float64(i)
 		spherePosition := geometry.NewVector(math.Sin(angle)*size/6.+size/2., floorY-radius, math.Cos(angle)*size/6.-size/4.)
