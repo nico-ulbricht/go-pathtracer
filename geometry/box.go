@@ -1,6 +1,7 @@
 package geometry
 
 import (
+	"log"
 	"math"
 )
 
@@ -13,15 +14,16 @@ func NewBox(minPosition, maxPosition *Vector) *Box {
 }
 
 func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
+	var normal *Vector
 	directionInverse := ray.Direction.Invert()
-	tmin := 1e-10
-	tmax := math.Inf(1)
+	tMin := 1e-10
+	tMax := math.Inf(1)
 
-	for a := 0; a < 3; a++ {
+	for i := 0; i < 3; i++ {
 		var axis string
-		if a == 0 {
+		if i == 0 {
 			axis = "X"
-		} else if a == 1 {
+		} else if i == 1 {
 			axis = "Y"
 		} else {
 			axis = "Z"
@@ -30,21 +32,53 @@ func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 		t0 := (box.minPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
 		t1 := (box.maxPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
 
-		if directionInverse.GetAxis(axis) < 0 {
+		isNegative := directionInverse.GetAxis(axis) < 0
+		if isNegative == true {
 			t0, t1 = t1, t0
 		}
-		if t0 > tmin {
-			tmin = t0
+
+		if t0 > tMin {
+			tMin = t0
+			if isNegative == true {
+				normal = getAxisAlignedNormal("+" + axis)
+			} else {
+				normal = getAxisAlignedNormal("-" + axis)
+			}
 		}
-		if t1 < tmax {
-			tmax = t1
+
+		if t1 < tMax {
+			tMax = t1
 		}
-		if tmax < tmin {
+
+		if tMax < tMin {
 			return false, NoIntersection
 		}
 	}
 
-	pointOfIntersection := ray.Origin.Add(ray.Direction.MultiplyScalar(tmin))
-	normal := NewVector(0, 0, -1)
-	return true, NewIntersection(tmin, normal, pointOfIntersection)
+	if normal == nil {
+		return false, NoIntersection
+	}
+
+	pointOfIntersection := ray.Origin.Add(ray.Direction.MultiplyScalar(tMin))
+	return true, NewIntersection(tMin, normal, pointOfIntersection)
+}
+
+func getAxisAlignedNormal(axis string) *Vector {
+	switch axis {
+	case "-X":
+		return NewVector(-1., 0, 0)
+	case "+X":
+		return NewVector(1., 0, 0)
+	case "-Y":
+		return NewVector(0, -1., 0)
+	case "+Y":
+		return NewVector(0, 1., 0)
+	case "-Z":
+		return NewVector(0, 0, -1.)
+	case "+Z":
+		return NewVector(0, 0, 1.)
+	}
+
+	log.Fatalf("Incorrect axis: %s\n", axis)
+	return NewVector(0, 0, 0)
 }
