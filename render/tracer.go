@@ -7,7 +7,7 @@ import (
 	"github.com/wahtye/go-pathtracer/material"
 )
 
-const MAX_BOUNCES = 4
+const MAX_BOUNCES = 3
 
 type Tracer struct {
 	width, height int
