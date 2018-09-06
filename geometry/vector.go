@@ -79,6 +79,24 @@ func (vec *Vector) Magnitude() float64 {
 	return math.Sqrt(math.Pow(vec.X, 2.) + math.Pow(vec.Y, 2.) + math.Pow(vec.Z, 2.))
 }
 
+func (vec *Vector) Invert() *Vector {
+	return NewVector(
+		1./vec.X,
+		1./vec.Y,
+		1./vec.Z,
+	)
+}
+
+func (vec *Vector) GetAxis(axis string) float64 {
+	if axis == "X" {
+		return vec.X
+	} else if axis == "Y" {
+		return vec.Y
+	} else {
+		return vec.Z
+	}
+}
+
 func (vec *Vector) RotateTowards(normal *Vector) *Vector {
 	upVector := NewVector(0, 0, 1)
 
