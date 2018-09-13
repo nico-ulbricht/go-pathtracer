@@ -16,7 +16,8 @@ func main() {
 func buildScene(size float64) *render.Scene {
 	scene := render.NewScene()
 	diffuseMaterial := material.NewDiffuseMaterial(1.)
-	emissiveMaterial := material.NewEmissiveMaterial(material.NewColor(1., .9, .8), 1.)
+	redEmissiveMaterial := material.NewEmissiveMaterial(geometry.NewColor(1., .2, .2), 1.)
+	greenEmissiveMaterial := material.NewEmissiveMaterial(geometry.NewColor(.2, 1., .2), 1.)
 	reflectiveMaterial := material.NewReflectiveMaterial(.8, 1.)
 
 	floorY := .5*size/2 + size/2
@@ -24,8 +25,8 @@ func buildScene(size float64) *render.Scene {
 	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, .5*size), geometry.NewVector(0, 0, -1.)))
 	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, -5*size), geometry.NewVector(0, 0, 1.)))
 
-	scene.AddObject(emissiveMaterial, geometry.NewPlane(geometry.NewVector(.75*size/2+size/2, 0, 0), geometry.NewVector(-1., 0, 0)))
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(-.75*size/2+size/2, 0, 0), geometry.NewVector(1., 0, 0)))
+	scene.AddObject(redEmissiveMaterial, geometry.NewPlane(geometry.NewVector(.75*size/2+size/2, 0, 0), geometry.NewVector(-1., 0, 0)))
+	scene.AddObject(greenEmissiveMaterial, geometry.NewPlane(geometry.NewVector(-.75*size/2+size/2, 0, 0), geometry.NewVector(1., 0, 0)))
 
 	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, -.75*size/2+size/2, 0), geometry.NewVector(0, 1., 0)))
 	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, floorY, 0), geometry.NewVector(0, -1., 0)))

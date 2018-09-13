@@ -5,15 +5,15 @@ import (
 )
 
 type EmissiveMaterial struct {
-	color     *Color
+	color     *geometry.Color
 	intensity float64
 }
 
-func NewEmissiveMaterial(color *Color, intensity float64) *EmissiveMaterial {
+func NewEmissiveMaterial(color *geometry.Color, intensity float64) *EmissiveMaterial {
 	return &EmissiveMaterial{color, intensity}
 }
 
-func (mat *EmissiveMaterial) GetColor(ray *geometry.Ray) *Color {
+func (mat *EmissiveMaterial) GetColor(ray *geometry.Ray) *geometry.Color {
 	return mat.color
 }
 

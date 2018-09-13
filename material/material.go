@@ -9,6 +9,6 @@ type WhiteBodyMaterial interface {
 }
 
 type BlackBodyMaterial interface {
-	GetColor(ray *geometry.Ray) *Color
+	GetColor(ray *geometry.Ray) *geometry.Color
 	GetIntensity(ray *geometry.Ray) float64
 }
