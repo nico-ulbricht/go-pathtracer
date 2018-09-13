@@ -9,11 +9,12 @@ import (
 
 type Pixel struct {
 	accumulation float64
+	colors       []*geometry.Color
 	samples      uint64
 }
 
 func NewPixel() *Pixel {
-	return &Pixel{0, 0}
+	return &Pixel{0, []*geometry.Color{}, 0}
 }
 
 type Gatherer struct {
@@ -46,6 +47,7 @@ func (gatherer *Gatherer) Gather() {
 		for _, photon := range photons {
 			position := photon.Y*gatherer.width + photon.X
 			gatherer.canvas[position].accumulation += photon.Intensity
+			gatherer.canvas[position].colors = append(gatherer.canvas[position].colors, photon.Color)
 			gatherer.canvas[position].samples++
 			total++
 		}

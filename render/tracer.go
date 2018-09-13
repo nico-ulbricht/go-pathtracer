@@ -7,7 +7,7 @@ import (
 	"github.com/wahtye/go-pathtracer/material"
 )
 
-const MAX_BOUNCES = 3
+const MAX_BOUNCES = 4
 
 type Tracer struct {
 	width, height int
@@ -20,7 +20,7 @@ type Tracer struct {
 func NewTracer(width, height int, scene *Scene, photonChannel chan []*geometry.Photon) *Tracer {
 	photonBuffer := make([]*geometry.Photon, 250000)
 	for idx := range photonBuffer {
-		photonBuffer[idx] = geometry.NewPhoton(0, 0, 0)
+		photonBuffer[idx] = geometry.NewPhoton(0, 0, geometry.NewColor(0, 0, 0), 0)
 	}
 
 	camera := NewCamera(width, height, 500)
@@ -71,6 +71,7 @@ func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray) 
 		reflectionRay.Bounces++
 		return tracer.processPhoton(photon, reflectionRay)
 	case material.BlackBodyMaterial:
+		photon.Color = objectMaterial.GetColor(ray)
 		photon.Intensity = objectMaterial.GetIntensity(ray)
 		return photon
 	}

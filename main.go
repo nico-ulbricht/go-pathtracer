@@ -16,21 +16,24 @@ func main() {
 func buildScene(size float64) *render.Scene {
 	scene := render.NewScene()
 	diffuseMaterial := material.NewDiffuseMaterial(1.)
-	emissiveMaterial := material.NewEmissiveMaterial(1., 5000)
+	redColorMaterial := material.NewColorMaterial(geometry.NewColor(1., .2, .2), 1.)
+	greenColorMaterial := material.NewColorMaterial(geometry.NewColor(.2, 1., .2), 1.)
+	emissiveMaterial := material.NewEmissiveMaterial(geometry.NewColor(1., 1., 1.), 1.)
 	reflectiveMaterial := material.NewReflectiveMaterial(.8, 1.)
 
 	floorY := .5*size/2 + size/2
+	ceilingY := -.75*size/2 + size/2
 
 	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, .5*size), geometry.NewVector(0, 0, -1.)))
 	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, -5*size), geometry.NewVector(0, 0, 1.)))
 
-	scene.AddObject(emissiveMaterial, geometry.NewPlane(geometry.NewVector(.75*size/2+size/2, 0, 0), geometry.NewVector(-1., 0, 0)))
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(-.75*size/2+size/2, 0, 0), geometry.NewVector(1., 0, 0)))
+	scene.AddObject(redColorMaterial, geometry.NewPlane(geometry.NewVector(.75*size/2+size/2, 0, 0), geometry.NewVector(-1., 0, 0)))
+	scene.AddObject(greenColorMaterial, geometry.NewPlane(geometry.NewVector(-.75*size/2+size/2, 0, 0), geometry.NewVector(1., 0, 0)))
 
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, -.75*size/2+size/2, 0), geometry.NewVector(0, 1., 0)))
+	scene.AddObject(emissiveMaterial, geometry.NewPlane(geometry.NewVector(0, ceilingY, 0), geometry.NewVector(0, 1., 0)))
 	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, floorY, 0), geometry.NewVector(0, -1., 0)))
 
-	scene.AddObject(diffuseMaterial, geometry.NewBox(geometry.NewVector(125., floorY-100., -150.), geometry.NewVector(175., floorY, -100.)))
+	scene.AddObject(diffuseMaterial, geometry.NewBox(geometry.NewVector(125., floorY-60., -150.), geometry.NewVector(175., floorY, -100.)))
 
 	sphereCount := 2
 	radius := size / 12.

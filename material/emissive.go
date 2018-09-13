@@ -1,13 +1,20 @@
 package material
 
-import "github.com/wahtye/go-pathtracer/geometry"
+import (
+	"github.com/wahtye/go-pathtracer/geometry"
+)
 
 type EmissiveMaterial struct {
-	intensity, temperature float64
+	color     *geometry.Color
+	intensity float64
 }
 
-func NewEmissiveMaterial(intensity, temperature float64) *EmissiveMaterial {
-	return &EmissiveMaterial{intensity, temperature}
+func NewEmissiveMaterial(color *geometry.Color, intensity float64) *EmissiveMaterial {
+	return &EmissiveMaterial{color, intensity}
+}
+
+func (mat *EmissiveMaterial) GetColor(ray *geometry.Ray) *geometry.Color {
+	return geometry.BlendColors(ray.Color, mat.color)
 }
 
 func (mat *EmissiveMaterial) GetIntensity(ray *geometry.Ray) float64 {
