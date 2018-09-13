@@ -10,7 +10,7 @@ func NewColor(r, g, b float64) *Color {
 	return &Color{r, g, b}
 }
 
-func BlendColors(colors []*Color) *Color {
+func BlendColors(colors ...*Color) *Color {
 	totalColors := float64(len(colors))
 	rAccumulated := 0.
 	gAccumulated := 0.

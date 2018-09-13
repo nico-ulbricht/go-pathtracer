@@ -14,7 +14,7 @@ func NewEmissiveMaterial(color *geometry.Color, intensity float64) *EmissiveMate
 }
 
 func (mat *EmissiveMaterial) GetColor(ray *geometry.Ray) *geometry.Color {
-	return mat.color
+	return geometry.BlendColors(ray.Color, mat.color)
 }
 
 func (mat *EmissiveMaterial) GetIntensity(ray *geometry.Ray) float64 {

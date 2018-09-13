@@ -34,7 +34,7 @@ func (plotter *Plotter) Plot() {
 				pixel := canvas[position]
 
 				accumulation := math.Min(1., math.Pow(pixel.accumulation/float64(pixel.samples), GAMMA))
-				accumulatedColor := geometry.BlendColors(pixel.colors)
+				accumulatedColor := geometry.BlendColors(pixel.colors...)
 
 				rColor := uint8(math.Floor(accumulatedColor.R * accumulation * 255.))
 				gColor := uint8(math.Floor(accumulatedColor.G * accumulation * 255.))
