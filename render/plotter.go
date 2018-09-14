@@ -7,7 +7,7 @@ import (
 	"math"
 	"os"
 
-	"github.com/wahtye/go-pathtracer/geometry"
+	"github.com/wahtye/go-pathtracer/material"
 )
 
 const GAMMA = .75
@@ -34,11 +34,11 @@ func (plotter *Plotter) Plot() {
 				pixel := canvas[position]
 
 				accumulation := math.Min(1., math.Pow(pixel.accumulation/float64(pixel.samples), GAMMA))
-				accumulatedColor := geometry.BlendColors(pixel.colors...)
+				accumulatedColor := material.BlendColors(pixel.colors...)
 
-				rColor := uint8(math.Floor(accumulatedColor.R * accumulation * 255.))
-				gColor := uint8(math.Floor(accumulatedColor.G * accumulation * 255.))
-				bColor := uint8(math.Floor(accumulatedColor.B * accumulation * 255.))
+				rColor := uint8(math.Floor(accumulatedColor.X * accumulation * 255.))
+				gColor := uint8(math.Floor(accumulatedColor.Y * accumulation * 255.))
+				bColor := uint8(math.Floor(accumulatedColor.Z * accumulation * 255.))
 
 				img.SetRGBA(x, y, color.RGBA{rColor, gColor, bColor, 255})
 			}

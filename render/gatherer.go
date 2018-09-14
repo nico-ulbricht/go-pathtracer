@@ -9,12 +9,12 @@ import (
 
 type Pixel struct {
 	accumulation float64
-	colors       []*geometry.Color
+	colors       []*geometry.Vector
 	samples      uint64
 }
 
 func NewPixel() *Pixel {
-	return &Pixel{0, []*geometry.Color{}, 0}
+	return &Pixel{0, []*geometry.Vector{}, 0}
 }
 
 type Gatherer struct {

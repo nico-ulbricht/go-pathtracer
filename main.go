@@ -16,9 +16,9 @@ func main() {
 func buildScene(size float64) *render.Scene {
 	scene := render.NewScene()
 	diffuseMaterial := material.NewDiffuseMaterial(1.)
-	redColorMaterial := material.NewColorMaterial(geometry.NewColor(1., .2, .2), 1.)
-	greenColorMaterial := material.NewColorMaterial(geometry.NewColor(.2, 1., .2), 1.)
-	emissiveMaterial := material.NewEmissiveMaterial(geometry.NewColor(1., 1., 1.), 1.)
+	redColorMaterial := material.NewColorMaterial(geometry.NewVector(1., .2, .2), 1.)
+	greenColorMaterial := material.NewColorMaterial(geometry.NewVector(.2, 1., .2), 1.)
+	emissiveMaterial := material.NewEmissiveMaterial(geometry.NewVector(1., 1., 1.), 1.)
 	reflectiveMaterial := material.NewReflectiveMaterial(.8, 1.)
 
 	floorY := .5*size/2 + size/2
