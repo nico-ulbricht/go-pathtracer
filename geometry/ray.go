@@ -2,7 +2,8 @@ package geometry
 
 type Ray struct {
 	Bounces           uint8
-	Color             *Vector
+	AccumulatedColor  *Vector
+	ColorBounces      uint8
 	Origin, Direction *Vector
 	Intensity         float64
 }
@@ -11,7 +12,8 @@ func NewRay(origin, direction *Vector) *Ray {
 	normalizedDirection := direction.Normalize()
 	return &Ray{
 		0.,
-		NewVector(1., 1., 1.),
+		NewVector(0., 0., 0.),
+		0.,
 		origin,
 		normalizedDirection,
 		1.,
@@ -26,7 +28,8 @@ func NewZeroRay() *Ray {
 
 func (ray *Ray) Reset() *Ray {
 	ray.Bounces = 0.
-	ray.Color = NewVector(1., 1., 1.)
+	ray.ColorBounces = 0.
+	ray.AccumulatedColor = NewVector(0., 0., 0.)
 	ray.Intensity = 1.
 	return ray
 }

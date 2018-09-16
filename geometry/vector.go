@@ -41,6 +41,14 @@ func (vec *Vector) Subtract(vec2 *Vector) *Vector {
 	)
 }
 
+func (vec *Vector) Multiply(vec2 *Vector) *Vector {
+	return NewVector(
+		vec.X*vec2.X,
+		vec.Y*vec2.Y,
+		vec.Z*vec2.Z,
+	)
+}
+
 func (vec *Vector) MultiplyScalar(multiplier float64) *Vector {
 	return NewVector(
 		vec.X*multiplier,
@@ -54,6 +62,18 @@ func (vec *Vector) DivideScalar(divider float64) *Vector {
 		vec.X/divider,
 		vec.Y/divider,
 		vec.Z/divider,
+	)
+}
+
+func (vec *Vector) Sq() *Vector {
+	return vec.Multiply(vec)
+}
+
+func (vec *Vector) Sqrt() *Vector {
+	return NewVector(
+		math.Sqrt(vec.X),
+		math.Sqrt(vec.Y),
+		math.Sqrt(vec.Z),
 	)
 }
 

@@ -14,7 +14,8 @@ func NewEmissiveMaterial(color *geometry.Vector, intensity float64) *EmissiveMat
 }
 
 func (mat *EmissiveMaterial) GetColor(ray *geometry.Ray) *geometry.Vector {
-	return BlendColors(ray.Color, mat.color)
+	accumulatedColor := ray.AccumulatedColor.Add(mat.color.Sq())
+	return accumulatedColor.DivideScalar(float64(ray.ColorBounces + 1)).Sqrt()
 }
 
 func (mat *EmissiveMaterial) GetIntensity(ray *geometry.Ray) float64 {
