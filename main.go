@@ -26,13 +26,13 @@ func buildScene(size float64) *render.Scene {
 	scene.AddObject(diffuseMaterial,
 		geometry.NewBox(geometry.NewVector(0, 0, 249), geometry.NewVector(500, 500, 250)))
 	scene.AddObject(redColorMaterial,
-		geometry.NewBox(geometry.NewVector(500, 0, -500), geometry.NewVector(501, 500, 500)))
+		geometry.NewBox(geometry.NewVector(500, 0, -400), geometry.NewVector(501, 500, 500)))
 	scene.AddObject(greenColorMaterial,
-		geometry.NewBox(geometry.NewVector(0, 0, -500), geometry.NewVector(1, 500, 500)))
+		geometry.NewBox(geometry.NewVector(0, 0, -400), geometry.NewVector(1, 500, 500)))
 	scene.AddObject(emissiveMaterial,
-		geometry.NewBox(geometry.NewVector(0, ceilingY, -500), geometry.NewVector(500, ceilingY+1., 500)))
+		geometry.NewBox(geometry.NewVector(0, ceilingY, -400), geometry.NewVector(500, ceilingY+1., 500)))
 	scene.AddObject(diffuseMaterial,
-		geometry.NewBox(geometry.NewVector(0, floorY, -500), geometry.NewVector(500, floorY+1., 500)))
+		geometry.NewBox(geometry.NewVector(0, floorY, -400), geometry.NewVector(500, floorY+1., 500)))
 
 	sphereCount := 12
 	radius := 20.
