@@ -136,3 +136,19 @@ func (vec *Vector) RotateTowards(normal *Vector) *Vector {
 	rotatedVector := p1.Add(p2).Add(p3).Normalize()
 	return rotatedVector
 }
+
+func (vec *Vector) Min(vec2 *Vector) *Vector {
+	return NewVector(
+		math.Min(vec.X, vec2.X),
+		math.Min(vec.Y, vec2.Y),
+		math.Min(vec.Z, vec2.Z),
+	)
+}
+
+func (vec *Vector) Max(vec2 *Vector) *Vector {
+	return NewVector(
+		math.Max(vec.X, vec2.X),
+		math.Max(vec.Y, vec2.Y),
+		math.Max(vec.Z, vec2.Z),
+	)
+}

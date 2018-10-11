@@ -86,3 +86,10 @@ func getAxisAlignedNormal(axis string) *Vector {
 	log.Fatalf("Incorrect axis: %s\n", axis)
 	return NewVector(0, 0, 0)
 }
+
+func (box *Box) Extend(box2 *Box) *Box {
+	return NewBox(
+		box.minPosition.Min(box2.minPosition),
+		box.maxPosition.Max(box2.maxPosition),
+	)
+}
