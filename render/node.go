@@ -8,25 +8,34 @@ const MAX_NODE_OBJECTS = 4
 const MAX_DEPTH = 10
 
 type Node struct {
-	IsLeaf  bool
-	Left    *Node
-	Right   *Node
-	Objects []*Object
+	Axis        geometry.Axis
+	BoundingBox *geometry.Box
+	IsLeaf      bool
+	Left        *Node
+	Right       *Node
+	Point       float64
+	Objects     []*Object
 }
 
 func NewNode(objects []*Object) *Node {
+	boundingBox := objects[0].Surface.BoundingBox()
+	for _, object := range objects {
+		boundingBox = boundingBox.Extend(object.Surface.BoundingBox())
+	}
+
 	return &Node{
-		IsLeaf:  false,
-		Left:    nil,
-		Right:   nil,
-		Objects: objects,
+		BoundingBox: boundingBox,
+		IsLeaf:      false,
+		Left:        nil,
+		Right:       nil,
+		Objects:     objects,
 	}
 }
 
 func (node *Node) Split(depth int) *Node {
 	if len(node.Objects) <= MAX_NODE_OBJECTS || depth > MAX_DEPTH {
 		node.IsLeaf = true
-		return nil
+		return node
 	}
 
 	axis := geometry.AxisIndexed[depth%3]
@@ -53,14 +62,42 @@ func (node *Node) Split(depth int) *Node {
 		}
 	}
 
-	node.Left = NewNode(leftObjects)
-	node.Right = NewNode(rightObjects)
-	node.Left.Split(depth + 1)
-	node.Right.Split(depth + 1)
-
+	node.Left = NewNode(leftObjects).Split(depth + 1)
+	node.Right = NewNode(rightObjects).Split(depth + 1)
 	return node
 }
 
-func (node *Node) Intersect(ray *geometry.Ray) *Node {
-	return node
+func (node *Node) Intersect(ray *geometry.Ray) (bool, *geometry.Intersection, *Object) {
+	// if node.IsLeaf {
+	return node.IntersectObjects(ray)
+	// }
+
+	// var first *Node
+	// var second *Node
+	// rayPoint := ray.Origin.GetAxis(node.Axis)
+	// rayDirection := ray.Direction.GetAxis(node.Axis)
+	// leftFirst := (rayPoint < node.Point) || (rayPoint == node.Point && rayDirection <= 0)
+	// if leftFirst {
+	// 	first = node.Left
+	// 	second = node.Right
+	// } else {
+	// 	first = node.Right
+	// 	second = node.Left
+	// }
+	// return false, nil, nil
+}
+
+func (node *Node) IntersectObjects(ray *geometry.Ray) (bool, *geometry.Intersection, *Object) {
+	var closestIntersection *geometry.Intersection
+	var closestObject *Object
+	for _, object := range node.Objects {
+		isIntersection, intersection := object.Surface.Intersect(ray)
+		if isIntersection == true && (closestIntersection == nil || closestIntersection.Distance > intersection.Distance) {
+			closestIntersection = intersection
+			closestObject = object
+		}
+	}
+
+	isIntersection := closestIntersection != nil
+	return isIntersection, closestIntersection, closestObject
 }

@@ -50,9 +50,9 @@ func (tracer *Tracer) Trace() {
 
 func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray) *geometry.Photon {
 	photon.Intensity = 0.
-	closestIntersection, closestObject := tracer.tree.Intersect(ray)
+	isIntersection, closestIntersection, closestObject := tracer.tree.Intersect(ray)
 
-	if closestObject == nil || ray.Bounces > MAX_BOUNCES {
+	if isIntersection == false || ray.Bounces > MAX_BOUNCES {
 		return photon
 	}
 

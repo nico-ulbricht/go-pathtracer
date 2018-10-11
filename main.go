@@ -23,12 +23,16 @@ func buildScene(size float64) *render.Scene {
 	emissiveMaterial := material.NewEmissiveMaterial(geometry.NewVector(1., 1., 1.), 1.)
 	ceilingY := -.75*size/2 + size/2
 
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, .5*size), geometry.NewVector(0, 0, -1.)))
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, -5*size), geometry.NewVector(0, 0, 1.)))
-	scene.AddObject(redColorMaterial, geometry.NewPlane(geometry.NewVector(.75*size/2+size/2, 0, 0), geometry.NewVector(-1., 0, 0)))
-	scene.AddObject(greenColorMaterial, geometry.NewPlane(geometry.NewVector(-.75*size/2+size/2, 0, 0), geometry.NewVector(1., 0, 0)))
-	scene.AddObject(emissiveMaterial, geometry.NewPlane(geometry.NewVector(0, ceilingY, 0), geometry.NewVector(0, 1., 0)))
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, floorY, 0), geometry.NewVector(0, -1., 0)))
+	scene.AddObject(diffuseMaterial,
+		geometry.NewBox(geometry.NewVector(0, 0, 249), geometry.NewVector(500, 500, 250)))
+	scene.AddObject(redColorMaterial,
+		geometry.NewBox(geometry.NewVector(500, 0, -500), geometry.NewVector(501, 500, 500)))
+	scene.AddObject(greenColorMaterial,
+		geometry.NewBox(geometry.NewVector(0, 0, -500), geometry.NewVector(1, 500, 500)))
+	scene.AddObject(emissiveMaterial,
+		geometry.NewBox(geometry.NewVector(0, ceilingY, -500), geometry.NewVector(500, ceilingY+1., 500)))
+	scene.AddObject(diffuseMaterial,
+		geometry.NewBox(geometry.NewVector(0, floorY, -500), geometry.NewVector(500, floorY+1., 500)))
 
 	sphereCount := 12
 	radius := 20.
@@ -43,9 +47,9 @@ func buildScene(size float64) *render.Scene {
 
 			var mat material.Material
 			if (i+j)%2 != 0 {
-				mat = diffuseMaterial
-			} else {
 				mat = reflectiveMaterial
+			} else {
+				mat = diffuseMaterial
 			}
 
 			scene.AddObject(mat, sphere)

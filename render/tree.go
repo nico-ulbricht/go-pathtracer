@@ -5,37 +5,19 @@ import (
 )
 
 type Tree struct {
-	BoundingBox *geometry.Box
-	Root        *Node
+	Root *Node
 }
 
-func NewTree(boundingBox *geometry.Box, node *Node) *Tree {
-	return &Tree{boundingBox, node}
+func NewTree(node *Node) *Tree {
+	return &Tree{node}
 }
 
 func NewTreeFromObjects(objects []*Object) *Tree {
-	boundingBox := objects[0].Surface.BoundingBox()
-	for _, object := range objects {
-		boundingBox = boundingBox.Extend(object.Surface.BoundingBox())
-	}
-
 	node := NewNode(objects)
 	node.Split(0)
-	return NewTree(boundingBox, node)
+	return NewTree(node)
 }
 
-func (tree *Tree) Intersect(ray *geometry.Ray) (*geometry.Intersection, *Object) {
-	node := tree.Root.Intersect(ray)
-
-	var closestIntersection *geometry.Intersection
-	var closestObject *Object
-	for _, object := range node.Objects {
-		isIntersection, intersection := object.Surface.Intersect(ray)
-		if isIntersection == true && (closestIntersection == nil || closestIntersection.Distance > intersection.Distance) {
-			closestIntersection = intersection
-			closestObject = object
-		}
-	}
-
-	return closestIntersection, closestObject
+func (tree *Tree) Intersect(ray *geometry.Ray) (bool, *geometry.Intersection, *Object) {
+	return tree.Root.Intersect(ray)
 }
