@@ -1,7 +1,7 @@
 package geometry
 
 import (
-	"log"
+	"fmt"
 	"math"
 )
 
@@ -30,15 +30,7 @@ func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 	tMax := math.Inf(1)
 
 	for i := 0; i < 3; i++ {
-		var axis string
-		if i == 0 {
-			axis = "X"
-		} else if i == 1 {
-			axis = "Y"
-		} else {
-			axis = "Z"
-		}
-
+		axis := AxisIndexed[i]
 		t0 := (box.minPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
 		t1 := (box.maxPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
 
@@ -50,9 +42,11 @@ func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 		if t0 > tMin {
 			tMin = t0
 			if isNegative == true {
-				normal = getAxisAlignedNormal("+" + axis)
+				alignedAxis := fmt.Sprintf("+%s", axis)
+				normal = AxisAlignedNormals[alignedAxis]
 			} else {
-				normal = getAxisAlignedNormal("-" + axis)
+				alignedAxis := fmt.Sprintf("-%s", axis)
+				normal = AxisAlignedNormals[alignedAxis]
 			}
 		}
 
@@ -71,26 +65,6 @@ func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 
 	pointOfIntersection := ray.Origin.Add(ray.Direction.MultiplyScalar(tMin))
 	return true, NewIntersection(tMin, normal, pointOfIntersection)
-}
-
-func getAxisAlignedNormal(axis string) *Vector {
-	switch axis {
-	case "-X":
-		return NewVector(-1., 0, 0)
-	case "+X":
-		return NewVector(1., 0, 0)
-	case "-Y":
-		return NewVector(0, -1., 0)
-	case "+Y":
-		return NewVector(0, 1., 0)
-	case "-Z":
-		return NewVector(0, 0, -1.)
-	case "+Z":
-		return NewVector(0, 0, 1.)
-	}
-
-	log.Fatalf("Incorrect axis: %s\n", axis)
-	return NewVector(0, 0, 0)
 }
 
 func (box *Box) Extend(box2 *Box) *Box {

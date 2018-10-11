@@ -107,14 +107,17 @@ func (vec *Vector) Invert() *Vector {
 	)
 }
 
-func (vec *Vector) GetAxis(axis string) float64 {
-	if axis == "X" {
+func (vec *Vector) GetAxis(axis Axis) float64 {
+	switch axis {
+	case AxisX:
 		return vec.X
-	} else if axis == "Y" {
+	case AxisY:
 		return vec.Y
-	} else {
+	case AxisZ:
 		return vec.Z
 	}
+
+	return 0
 }
 
 func (vec *Vector) RotateTowards(normal *Vector) *Vector {
