@@ -7,7 +7,7 @@ import (
 )
 
 const MAX_NODE_OBJECTS = 8
-const MAX_DEPTH = 0
+const MAX_DEPTH = 2
 
 type Node struct {
 	Axis        geometry.Axis
@@ -84,7 +84,7 @@ func (node *Node) Intersect(ray *geometry.Ray) (bool, *geometry.Intersection, *O
 	rightIntersects, rightIntersection, rightObject := node.Right.Intersect(ray)
 
 	if leftIntersects && rightIntersects {
-		if leftIntersection.Distance >= rightIntersection.Distance {
+		if leftIntersection.Distance <= rightIntersection.Distance {
 			return leftIntersects, leftIntersection, leftObject
 		} else {
 			return rightIntersects, rightIntersection, rightObject

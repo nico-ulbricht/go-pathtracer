@@ -18,7 +18,7 @@ type Tracer struct {
 }
 
 func NewTracer(width, height int, tree *Tree, photonChannel chan []*geometry.Photon) *Tracer {
-	photonBuffer := make([]*geometry.Photon, 100000)
+	photonBuffer := make([]*geometry.Photon, 20000)
 	for idx := range photonBuffer {
 		photonBuffer[idx] = geometry.NewPhoton(0, 0, geometry.NewVector(0, 0, 0), 0)
 	}
