@@ -12,12 +12,12 @@ const MAX_BOUNCES = 4
 type Tracer struct {
 	width, height int
 	camera        *Camera
-	scene         *Scene
+	tree          *Tree
 	photonBuffer  []*geometry.Photon
 	photonChannel chan []*geometry.Photon
 }
 
-func NewTracer(width, height int, scene *Scene, photonChannel chan []*geometry.Photon) *Tracer {
+func NewTracer(width, height int, tree *Tree, photonChannel chan []*geometry.Photon) *Tracer {
 	photonBuffer := make([]*geometry.Photon, 250000)
 	for idx := range photonBuffer {
 		photonBuffer[idx] = geometry.NewPhoton(0, 0, geometry.NewVector(0, 0, 0), 0)
@@ -27,7 +27,7 @@ func NewTracer(width, height int, scene *Scene, photonChannel chan []*geometry.P
 	return &Tracer{
 		width, height,
 		camera,
-		scene,
+		tree,
 		photonBuffer,
 		photonChannel,
 	}
@@ -50,16 +50,7 @@ func (tracer *Tracer) Trace() {
 
 func (tracer *Tracer) processPhoton(photon *geometry.Photon, ray *geometry.Ray) *geometry.Photon {
 	photon.Intensity = 0.
-
-	var closestIntersection *geometry.Intersection
-	var closestObject *Object
-	for _, object := range tracer.scene.Objects {
-		isIntersection, intersection := object.Surface.Intersect(ray)
-		if isIntersection == true && (closestIntersection == nil || closestIntersection.Distance > intersection.Distance) {
-			closestIntersection = intersection
-			closestObject = object
-		}
-	}
+	closestIntersection, closestObject := tracer.tree.Intersect(ray)
 
 	if closestObject == nil || ray.Bounces > MAX_BOUNCES {
 		return photon

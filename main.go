@@ -6,12 +6,10 @@ import (
 	"github.com/nico-ulbricht/go-pathtracer/geometry"
 	"github.com/nico-ulbricht/go-pathtracer/material"
 	"github.com/nico-ulbricht/go-pathtracer/render"
-	"github.com/nico-ulbricht/go-pathtracer/tree"
 )
 
 func main() {
 	scene := buildScene(500.)
-	tree.NewTreeFromObjects(scene.Objects)
 	render.NewRenderer(500, 500, scene).Render()
 }
 
