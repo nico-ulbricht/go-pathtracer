@@ -16,22 +16,22 @@ func main() {
 func buildScene(size float64) *render.Scene {
 	scene := render.NewScene()
 	diffuseMaterial := material.NewDiffuseMaterial(geometry.NewVector(1., 1., 1.), 1.)
-	redColorMaterial := material.NewDiffuseMaterial(geometry.NewVector(1., 0., 0.), 1.)
-	greenColorMaterial := material.NewDiffuseMaterial(geometry.NewVector(0., 1., 0.), 1.)
-	emissiveMaterial := material.NewEmissiveMaterial(geometry.NewVector(1., 1., 1.), 1.)
+	// redColorMaterial := material.NewDiffuseMaterial(geometry.NewVector(1., 0., 0.), 1.)
+	// greenColorMaterial := material.NewDiffuseMaterial(geometry.NewVector(0., 1., 0.), 1.)
+	// emissiveMaterial := material.NewEmissiveMaterial(geometry.NewVector(1., 1., 1.), 1.)
 	reflectiveMaterial := material.NewReflectiveMaterial(.8, 1.)
 
 	floorY := .5*size/2 + size/2
-	ceilingY := -.75*size/2 + size/2
+	// ceilingY := -.75*size/2 + size/2
 
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, .5*size), geometry.NewVector(0, 0, -1.)))
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, -5*size), geometry.NewVector(0, 0, 1.)))
+	// scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, .5*size), geometry.NewVector(0, 0, -1.)))
+	// scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, 0, -5*size), geometry.NewVector(0, 0, 1.)))
 
-	scene.AddObject(redColorMaterial, geometry.NewPlane(geometry.NewVector(.75*size/2+size/2, 0, 0), geometry.NewVector(-1., 0, 0)))
-	scene.AddObject(greenColorMaterial, geometry.NewPlane(geometry.NewVector(-.75*size/2+size/2, 0, 0), geometry.NewVector(1., 0, 0)))
+	// scene.AddObject(redColorMaterial, geometry.NewPlane(geometry.NewVector(.75*size/2+size/2, 0, 0), geometry.NewVector(-1., 0, 0)))
+	// scene.AddObject(greenColorMaterial, geometry.NewPlane(geometry.NewVector(-.75*size/2+size/2, 0, 0), geometry.NewVector(1., 0, 0)))
 
-	scene.AddObject(emissiveMaterial, geometry.NewPlane(geometry.NewVector(0, ceilingY, 0), geometry.NewVector(0, 1., 0)))
-	scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, floorY, 0), geometry.NewVector(0, -1., 0)))
+	// scene.AddObject(emissiveMaterial, geometry.NewPlane(geometry.NewVector(0, ceilingY, 0), geometry.NewVector(0, 1., 0)))
+	// scene.AddObject(diffuseMaterial, geometry.NewPlane(geometry.NewVector(0, floorY, 0), geometry.NewVector(0, -1., 0)))
 
 	sphereCount := 6
 	radius := size / 24.
