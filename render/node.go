@@ -4,8 +4,8 @@ import (
 	"github.com/nico-ulbricht/go-pathtracer/geometry"
 )
 
-const MAX_NODE_OBJECTS = 4
-const MAX_DEPTH = 10
+const MAX_NODE_OBJECTS = 8
+const MAX_DEPTH = 25
 
 type Node struct {
 	Axis        geometry.Axis
@@ -73,23 +73,11 @@ func (node *Node) Intersect(ray *geometry.Ray) (bool, *geometry.Intersection, *O
 		return false, nil, nil
 	}
 
-	// if node.IsLeaf {
-	return node.IntersectObjects(ray)
-	// }
+	if node.IsLeaf {
+		return node.IntersectObjects(ray)
+	}
 
-	// var first *Node
-	// var second *Node
-	// rayPoint := ray.Origin.GetAxis(node.Axis)
-	// rayDirection := ray.Direction.GetAxis(node.Axis)
-	// leftFirst := (rayPoint < node.Point) || (rayPoint == node.Point && rayDirection <= 0)
-	// if leftFirst {
-	// 	first = node.Left
-	// 	second = node.Right
-	// } else {
-	// 	first = node.Right
-	// 	second = node.Left
-	// }
-	// return false, nil, nil
+	return node.Left.Intersect(ray)
 }
 
 func (node *Node) IntersectObjects(ray *geometry.Ray) (bool, *geometry.Intersection, *Object) {
