@@ -25,15 +25,17 @@ func NewTreeFromObjects(objects []*Object) *Tree {
 }
 
 func (tree *Tree) Intersect(ray *geometry.Ray) (*geometry.Intersection, *Object) {
+	node := tree.Root.Intersect(ray)
+
 	var closestIntersection *geometry.Intersection
 	var closestObject *Object
-	// for _, object := range tracer.scene.Objects {
-	// 	isIntersection, intersection := object.Surface.Intersect(ray)
-	// 	if isIntersection == true && (closestIntersection == nil || closestIntersection.Distance > intersection.Distance) {
-	// 		closestIntersection = intersection
-	// 		closestObject = object
-	// 	}
-	// }
+	for _, object := range node.Objects {
+		isIntersection, intersection := object.Surface.Intersect(ray)
+		if isIntersection == true && (closestIntersection == nil || closestIntersection.Distance > intersection.Distance) {
+			closestIntersection = intersection
+			closestObject = object
+		}
+	}
 
 	return closestIntersection, closestObject
 }

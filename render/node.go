@@ -8,6 +8,7 @@ const MAX_NODE_OBJECTS = 4
 const MAX_DEPTH = 10
 
 type Node struct {
+	IsLeaf  bool
 	Left    *Node
 	Right   *Node
 	Objects []*Object
@@ -15,6 +16,7 @@ type Node struct {
 
 func NewNode(objects []*Object) *Node {
 	return &Node{
+		IsLeaf:  false,
 		Left:    nil,
 		Right:   nil,
 		Objects: objects,
@@ -23,6 +25,7 @@ func NewNode(objects []*Object) *Node {
 
 func (node *Node) Split(depth int) *Node {
 	if len(node.Objects) <= MAX_NODE_OBJECTS || depth > MAX_DEPTH {
+		node.IsLeaf = true
 		return nil
 	}
 
@@ -55,5 +58,9 @@ func (node *Node) Split(depth int) *Node {
 	node.Left.Split(depth + 1)
 	node.Right.Split(depth + 1)
 
+	return node
+}
+
+func (node *Node) Intersect(ray *geometry.Ray) *Node {
 	return node
 }
