@@ -68,6 +68,11 @@ func (node *Node) Split(depth int) *Node {
 }
 
 func (node *Node) Intersect(ray *geometry.Ray) (bool, *geometry.Intersection, *Object) {
+	intersectsNode, _ := node.BoundingBox.Intersect(ray)
+	if intersectsNode == false {
+		return false, nil, nil
+	}
+
 	// if node.IsLeaf {
 	return node.IntersectObjects(ray)
 	// }

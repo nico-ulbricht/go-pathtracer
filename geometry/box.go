@@ -18,6 +18,10 @@ func (box *Box) BoundingBox() *Box {
 }
 
 func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
+	if box.Includes(ray.Origin) == true {
+		return true, NoIntersection
+	}
+
 	var normal *Vector
 	directionInverse := ray.Direction.Invert()
 	tMin := 1e-10
@@ -72,4 +76,10 @@ func (box *Box) Partition(axis Axis, medianPoint float64) (left, right bool) {
 	minPoint := box.MinPosition.GetAxis(axis)
 	maxPoint := box.MaxPosition.GetAxis(axis)
 	return minPoint <= medianPoint, maxPoint >= medianPoint
+}
+
+func (box *Box) Includes(vec *Vector) bool {
+	return vec.X > box.MinPosition.X && vec.X < box.MaxPosition.X &&
+		vec.Y > box.MinPosition.Y && vec.Y < box.MaxPosition.Y &&
+		vec.Z > box.MinPosition.Z && vec.Z < box.MaxPosition.Z
 }
