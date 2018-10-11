@@ -13,6 +13,10 @@ func NewBox(minPosition, maxPosition *Vector) *Box {
 	return &Box{minPosition, maxPosition}
 }
 
+func (box *Box) BoundingBox() *Box {
+	return box
+}
+
 func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 	var normal *Vector
 	directionInverse := ray.Direction.Invert()

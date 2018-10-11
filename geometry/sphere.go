@@ -15,6 +15,14 @@ func NewSphere(center *Vector, radius float64) *Sphere {
 	return &Sphere{center, radius, radiusSq}
 }
 
+func (sphere *Sphere) BoundingBox() *Box {
+	center := sphere.center
+	return NewBox(
+		NewVector(center.X-sphere.radius, center.Y-sphere.radius, center.Z-sphere.radius),
+		NewVector(center.X+sphere.radius, center.Y+sphere.radius, center.Z+sphere.radius),
+	)
+}
+
 func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
 	centerToOrigin := sphere.center.Subtract(ray.Origin)
 	a := 1.
