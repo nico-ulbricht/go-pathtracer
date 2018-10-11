@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/wahtye/go-pathtracer/geometry"
+	"github.com/nico-ulbricht/go-pathtracer/geometry"
 )
 
 type Pixel struct {

@@ -11,8 +11,8 @@ It is meant purely as a learning project, and in no way optimized to be used for
 If you'd like to try it out nonetheless:  
 
 ```  
-go get github.com/wahtye/go-pathtracer  
-cd $GOPATH/src/github.com/wahtye/go-pathtracer  
+go get github.com/nico-ulbricht/go-pathtracer  
+cd $GOPATH/src/github.com/nico-ulbricht/go-pathtracer  
 go run *.go  
 ```
 

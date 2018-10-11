@@ -3,8 +3,8 @@ package render
 import (
 	"math/rand"
 
-	"github.com/wahtye/go-pathtracer/geometry"
-	"github.com/wahtye/go-pathtracer/material"
+	"github.com/nico-ulbricht/go-pathtracer/geometry"
+	"github.com/nico-ulbricht/go-pathtracer/material"
 )
 
 const MAX_BOUNCES = 4

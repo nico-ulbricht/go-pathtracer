@@ -1,6 +1,6 @@
 package material
 
-import "github.com/wahtye/go-pathtracer/geometry"
+import "github.com/nico-ulbricht/go-pathtracer/geometry"
 
 type Material interface{}
 

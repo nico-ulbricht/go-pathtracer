@@ -1,8 +1,8 @@
 package render
 
 import (
-	"github.com/wahtye/go-pathtracer/geometry"
-	"github.com/wahtye/go-pathtracer/material"
+	"github.com/nico-ulbricht/go-pathtracer/geometry"
+	"github.com/nico-ulbricht/go-pathtracer/material"
 )
 
 type Scene struct {

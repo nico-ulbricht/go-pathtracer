@@ -3,9 +3,9 @@ package main
 import (
 	"math"
 
-	"github.com/wahtye/go-pathtracer/geometry"
-	"github.com/wahtye/go-pathtracer/material"
-	"github.com/wahtye/go-pathtracer/render"
+	"github.com/nico-ulbricht/go-pathtracer/geometry"
+	"github.com/nico-ulbricht/go-pathtracer/material"
+	"github.com/nico-ulbricht/go-pathtracer/render"
 )
 
 func main() {

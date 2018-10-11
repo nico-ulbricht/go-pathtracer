@@ -3,7 +3,7 @@ package material
 import (
 	"math"
 
-	"github.com/wahtye/go-pathtracer/geometry"
+	"github.com/nico-ulbricht/go-pathtracer/geometry"
 )
 
 func BlendColors(colors ...*geometry.Vector) *geometry.Vector {

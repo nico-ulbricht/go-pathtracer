@@ -7,7 +7,7 @@ import (
 	"math"
 	"os"
 
-	"github.com/wahtye/go-pathtracer/material"
+	"github.com/nico-ulbricht/go-pathtracer/material"
 )
 
 const GAMMA = .75
