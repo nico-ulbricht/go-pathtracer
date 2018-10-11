@@ -7,12 +7,12 @@ import (
 
 type Box struct {
 	center                   *Vector
-	minPosition, maxPosition *Vector
+	MinPosition, MaxPosition *Vector
 }
 
-func NewBox(minPosition, maxPosition *Vector) *Box {
-	center := minPosition.Average(maxPosition)
-	return &Box{center, minPosition, maxPosition}
+func NewBox(MinPosition, MaxPosition *Vector) *Box {
+	center := MinPosition.Average(MaxPosition)
+	return &Box{center, MinPosition, MaxPosition}
 }
 
 func (box *Box) BoundingBox() *Box {
@@ -31,8 +31,8 @@ func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 
 	for i := 0; i < 3; i++ {
 		axis := AxisIndexed[i]
-		t0 := (box.minPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
-		t1 := (box.maxPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
+		t0 := (box.MinPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
+		t1 := (box.MaxPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
 
 		isNegative := directionInverse.GetAxis(axis) < 0
 		if isNegative == true {
@@ -69,7 +69,13 @@ func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 
 func (box *Box) Extend(box2 *Box) *Box {
 	return NewBox(
-		box.minPosition.Min(box2.minPosition),
-		box.maxPosition.Max(box2.maxPosition),
+		box.MinPosition.Min(box2.MinPosition),
+		box.MaxPosition.Max(box2.MaxPosition),
 	)
+}
+
+func (box *Box) Partition(axis Axis, medianPoint float64) (left, right bool) {
+	minPoint := box.MinPosition.GetAxis(axis)
+	maxPoint := box.MaxPosition.GetAxis(axis)
+	return minPoint <= medianPoint, maxPoint >= medianPoint
 }

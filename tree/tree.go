@@ -1,6 +1,9 @@
 package tree
 
-import "github.com/nico-ulbricht/go-pathtracer/geometry"
+import (
+	"github.com/nico-ulbricht/go-pathtracer/geometry"
+	"github.com/nico-ulbricht/go-pathtracer/render"
+)
 
 type Tree struct {
 	BoundingBox *geometry.Box
@@ -11,12 +14,13 @@ func NewTree(boundingBox *geometry.Box, node *Node) *Tree {
 	return &Tree{boundingBox, node}
 }
 
-func NewTreeFromSurfaces(surfaces []geometry.Surface) *Tree {
-	boundingBox := surfaces[0].BoundingBox()
-	for _, surface := range surfaces {
-		boundingBox = boundingBox.Extend(surface.BoundingBox())
+func NewTreeFromObjects(objects []*render.Object) *Tree {
+	boundingBox := objects[0].Surface.BoundingBox()
+	for _, object := range objects {
+		boundingBox = boundingBox.Extend(object.Surface.BoundingBox())
 	}
 
-	node := NewNode(surfaces)
+	node := NewNode(objects)
+	node.Split(0)
 	return NewTree(boundingBox, node)
 }
