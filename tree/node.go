@@ -1,13 +1,14 @@
 package tree
 
 import (
-	"time"
+	"fmt"
 
 	"github.com/nico-ulbricht/go-pathtracer/geometry"
 	"github.com/nico-ulbricht/go-pathtracer/render"
 )
 
-const MAX_NODE_OBJECTS = 3
+const MAX_NODE_OBJECTS = 4
+const MAX_DEPTH = 10
 
 type Node struct {
 	Left    *Node
@@ -24,7 +25,8 @@ func NewNode(objects []*render.Object) *Node {
 }
 
 func (node *Node) Split(depth int) *Node {
-	if len(node.Objects) <= MAX_NODE_OBJECTS {
+	fmt.Println(depth, len(node.Objects))
+	if len(node.Objects) <= MAX_NODE_OBJECTS || depth > MAX_DEPTH {
 		return nil
 	}
 
@@ -52,7 +54,6 @@ func (node *Node) Split(depth int) *Node {
 		}
 	}
 
-	time.Sleep(time.Second)
 	node.Left = NewNode(leftObjects)
 	node.Right = NewNode(rightObjects)
 	node.Left.Split(depth + 1)
