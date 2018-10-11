@@ -16,6 +16,10 @@ func (plane *Plane) BoundingBox() *Box {
 	)
 }
 
+func (plane *Plane) Center() *Vector {
+	return plane.center
+}
+
 func (plane *Plane) Intersect(ray *Ray) (bool, *Intersection) {
 	directionDotNormal := ray.Direction.Dot(plane.normal)
 

@@ -6,15 +6,21 @@ import (
 )
 
 type Box struct {
+	center                   *Vector
 	minPosition, maxPosition *Vector
 }
 
 func NewBox(minPosition, maxPosition *Vector) *Box {
-	return &Box{minPosition, maxPosition}
+	center := minPosition.Average(maxPosition)
+	return &Box{center, minPosition, maxPosition}
 }
 
 func (box *Box) BoundingBox() *Box {
 	return box
+}
+
+func (box *Box) Center() *Vector {
+	return box.center
 }
 
 func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {

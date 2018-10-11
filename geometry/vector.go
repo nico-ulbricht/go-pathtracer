@@ -152,3 +152,11 @@ func (vec *Vector) Max(vec2 *Vector) *Vector {
 		math.Max(vec.Z, vec2.Z),
 	)
 }
+
+func (vec *Vector) Average(vec2 *Vector) *Vector {
+	return NewVector(
+		(vec.X+vec2.X)/2.,
+		(vec.Y+vec2.Y)/2.,
+		(vec.Z+vec2.Z)/2.,
+	)
+}

@@ -23,6 +23,10 @@ func (sphere *Sphere) BoundingBox() *Box {
 	)
 }
 
+func (sphere *Sphere) Center() *Vector {
+	return sphere.center
+}
+
 func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {
 	centerToOrigin := sphere.center.Subtract(ray.Origin)
 	a := 1.
