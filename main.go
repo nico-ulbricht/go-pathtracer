@@ -13,6 +13,14 @@ func main() {
 	render.NewRenderer(500, 500, scene).Render()
 }
 
+var colors = []*geometry.Vector{
+	geometry.NewVector(1, .5, .5),
+	geometry.NewVector(.5, 1, .5),
+	geometry.NewVector(.5, .5, 1),
+	geometry.NewVector(.5, 1, 1),
+	geometry.NewVector(1, 1, 1),
+}
+
 func buildScene(size float64) *render.Scene {
 	scene := render.NewScene()
 	floorY := .5*size/2 + size/2
@@ -34,21 +42,26 @@ func buildScene(size float64) *render.Scene {
 	scene.AddObject(diffuseMaterial,
 		geometry.NewBox(geometry.NewVector(0, floorY, -400), geometry.NewVector(500, floorY+1., 500)))
 
-	sphereCount := 12
-	radius := 20.
-	for i := 0; i < 5; i++ {
+	sphereCount := 24
+	radius := 10.
+	for i := 0; i < 12; i++ {
 		for j := 0; j < sphereCount; j++ {
 			angle := float64(2.*math.Pi/float64(sphereCount)) * float64(j)
 			circleRadius := 100.
 			circleHeight := floorY - radius*2.5*float64(i)
 			circlePosition := geometry.NewVector(math.Sin(angle)*circleRadius, circleHeight, math.Cos(angle)*circleRadius)
 			offsetPosition := geometry.NewVector(size/2+radius, -radius, -size/4)
-			sphere := geometry.NewSphere(offsetPosition.Add(circlePosition), radius)
 
 			var mat material.Material
-			if (i+j)%2 != 0 {
+			var sphere *geometry.Sphere
+			if (i+j)%6 == 0 {
+				sphere = geometry.NewSphere(offsetPosition.Add(circlePosition), radius*1.5)
 				mat = reflectiveMaterial
 			} else {
+				// diffuse := material.NewDiffuseMaterial(
+				// 	colors[int(math.Floor(rand.Float64()*5))],
+				// 	rand.Float64()*.5+.5)
+				sphere = geometry.NewSphere(offsetPosition.Add(circlePosition), radius)
 				mat = diffuseMaterial
 			}
 
