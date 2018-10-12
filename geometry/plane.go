@@ -9,6 +9,13 @@ func NewPlane(center, normal *Vector) *Plane {
 	return &Plane{center, normal}
 }
 
+func (plane *Plane) BoundingBox() *Box {
+	return NewBox(
+		NewVector(-INF, -INF, -INF),
+		NewVector(INF, INF, INF),
+	)
+}
+
 func (plane *Plane) Intersect(ray *Ray) (bool, *Intersection) {
 	directionDotNormal := ray.Direction.Dot(plane.normal)
 

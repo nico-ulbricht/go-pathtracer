@@ -107,14 +107,17 @@ func (vec *Vector) Invert() *Vector {
 	)
 }
 
-func (vec *Vector) GetAxis(axis string) float64 {
-	if axis == "X" {
+func (vec *Vector) GetAxis(axis Axis) float64 {
+	switch axis {
+	case AxisX:
 		return vec.X
-	} else if axis == "Y" {
+	case AxisY:
 		return vec.Y
-	} else {
+	case AxisZ:
 		return vec.Z
 	}
+
+	return 0
 }
 
 func (vec *Vector) RotateTowards(normal *Vector) *Vector {
@@ -135,4 +138,28 @@ func (vec *Vector) RotateTowards(normal *Vector) *Vector {
 
 	rotatedVector := p1.Add(p2).Add(p3).Normalize()
 	return rotatedVector
+}
+
+func (vec *Vector) Min(vec2 *Vector) *Vector {
+	return NewVector(
+		math.Min(vec.X, vec2.X),
+		math.Min(vec.Y, vec2.Y),
+		math.Min(vec.Z, vec2.Z),
+	)
+}
+
+func (vec *Vector) Max(vec2 *Vector) *Vector {
+	return NewVector(
+		math.Max(vec.X, vec2.X),
+		math.Max(vec.Y, vec2.Y),
+		math.Max(vec.Z, vec2.Z),
+	)
+}
+
+func (vec *Vector) Average(vec2 *Vector) *Vector {
+	return NewVector(
+		(vec.X+vec2.X)/2.,
+		(vec.Y+vec2.Y)/2.,
+		(vec.Z+vec2.Z)/2.,
+	)
 }

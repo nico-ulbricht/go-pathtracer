@@ -9,7 +9,7 @@ import (
 
 type Renderer struct {
 	width, height int
-	scene         *Scene
+	tree          *Tree
 	canvasChannel chan []*Pixel
 	photonChannel chan []*geometry.Photon
 }
@@ -17,7 +17,8 @@ type Renderer struct {
 func NewRenderer(width, height int, scene *Scene) *Renderer {
 	canvasChannel := make(chan []*Pixel)
 	photonChannel := make(chan []*geometry.Photon)
-	return &Renderer{width, height, scene, canvasChannel, photonChannel}
+	tree := NewTreeFromObjects(scene.Objects)
+	return &Renderer{width, height, tree, canvasChannel, photonChannel}
 }
 
 func (renderer *Renderer) Render() {
@@ -30,7 +31,7 @@ func (renderer *Renderer) Render() {
 			defer wg.Done()
 			NewTracer(
 				renderer.width, renderer.height,
-				renderer.scene,
+				renderer.tree,
 				renderer.photonChannel,
 			).Trace()
 		}()

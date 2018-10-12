@@ -5,14 +5,24 @@ import (
 )
 
 type Sphere struct {
-	center   *Vector
-	radius   float64
-	radiusSq float64
+	boundingBox *Box
+	center      *Vector
+	radius      float64
+	radiusSq    float64
 }
 
 func NewSphere(center *Vector, radius float64) *Sphere {
+	boundingBox := NewBox(
+		NewVector(center.X-radius, center.Y-radius, center.Z-radius),
+		NewVector(center.X+radius, center.Y+radius, center.Z+radius),
+	)
+
 	radiusSq := math.Pow(radius, 2.)
-	return &Sphere{center, radius, radiusSq}
+	return &Sphere{boundingBox, center, radius, radiusSq}
+}
+
+func (sphere *Sphere) BoundingBox() *Box {
+	return sphere.boundingBox
 }
 
 func (sphere *Sphere) Intersect(ray *Ray) (bool, *Intersection) {

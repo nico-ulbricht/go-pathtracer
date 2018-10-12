@@ -1,36 +1,36 @@
 package geometry
 
 import (
-	"log"
+	"fmt"
 	"math"
 )
 
 type Box struct {
-	minPosition, maxPosition *Vector
+	MinPosition, MaxPosition *Vector
 }
 
-func NewBox(minPosition, maxPosition *Vector) *Box {
-	return &Box{minPosition, maxPosition}
+func NewBox(MinPosition, MaxPosition *Vector) *Box {
+	return &Box{MinPosition, MaxPosition}
+}
+
+func (box *Box) BoundingBox() *Box {
+	return box
 }
 
 func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
+	if box.Includes(ray.Origin) == true {
+		return true, NoIntersection
+	}
+
 	var normal *Vector
 	directionInverse := ray.Direction.Invert()
 	tMin := 1e-10
 	tMax := math.Inf(1)
 
 	for i := 0; i < 3; i++ {
-		var axis string
-		if i == 0 {
-			axis = "X"
-		} else if i == 1 {
-			axis = "Y"
-		} else {
-			axis = "Z"
-		}
-
-		t0 := (box.minPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
-		t1 := (box.maxPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
+		axis := AxisIndexed[i]
+		t0 := (box.MinPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
+		t1 := (box.MaxPosition.GetAxis(axis) - ray.Origin.GetAxis(axis)) * directionInverse.GetAxis(axis)
 
 		isNegative := directionInverse.GetAxis(axis) < 0
 		if isNegative == true {
@@ -40,9 +40,11 @@ func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 		if t0 > tMin {
 			tMin = t0
 			if isNegative == true {
-				normal = getAxisAlignedNormal("+" + axis)
+				alignedAxis := fmt.Sprintf("+%s", axis)
+				normal = AxisAlignedNormals[alignedAxis]
 			} else {
-				normal = getAxisAlignedNormal("-" + axis)
+				alignedAxis := fmt.Sprintf("-%s", axis)
+				normal = AxisAlignedNormals[alignedAxis]
 			}
 		}
 
@@ -63,22 +65,21 @@ func (box *Box) Intersect(ray *Ray) (bool, *Intersection) {
 	return true, NewIntersection(tMin, normal, pointOfIntersection)
 }
 
-func getAxisAlignedNormal(axis string) *Vector {
-	switch axis {
-	case "-X":
-		return NewVector(-1., 0, 0)
-	case "+X":
-		return NewVector(1., 0, 0)
-	case "-Y":
-		return NewVector(0, -1., 0)
-	case "+Y":
-		return NewVector(0, 1., 0)
-	case "-Z":
-		return NewVector(0, 0, -1.)
-	case "+Z":
-		return NewVector(0, 0, 1.)
-	}
+func (box *Box) Extend(box2 *Box) *Box {
+	return NewBox(
+		box.MinPosition.Min(box2.MinPosition),
+		box.MaxPosition.Max(box2.MaxPosition),
+	)
+}
 
-	log.Fatalf("Incorrect axis: %s\n", axis)
-	return NewVector(0, 0, 0)
+func (box *Box) Partition(axis Axis, medianPoint float64) (left, right bool) {
+	minPoint := box.MinPosition.GetAxis(axis)
+	maxPoint := box.MaxPosition.GetAxis(axis)
+	return minPoint <= medianPoint, maxPoint >= medianPoint
+}
+
+func (box *Box) Includes(vec *Vector) bool {
+	return vec.X > box.MinPosition.X && vec.X < box.MaxPosition.X &&
+		vec.Y > box.MinPosition.Y && vec.Y < box.MaxPosition.Y &&
+		vec.Z > box.MinPosition.Z && vec.Z < box.MaxPosition.Z
 }
